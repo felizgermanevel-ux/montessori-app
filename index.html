@@ -438,3 +438,421 @@ window.onload = updateUI;
 </script>
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,
+user-scalable=no, viewport-fit=cover">
+<title>Montessori Pro</title>
+<!-- Configuracion para App de iPhone -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Montessori">
+<!-- Icono forzado con colores intensos para evitar la 'M' generica -->
+
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/
+svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23FF5E57'/><circle
+cx='50' cy='50' r='35' fill='%23FECA57'/><path d='M30 70 L50 30 L70 70 Z' fill='white'/></
+svg>">
+<style>
+:root {
+--bg: #FFFBEC;
+--red: #FF5E57;
+--blue: #18DCFF;
+--yellow: #FECA57;
+--green: #1DD1A1;
+--purple: #A29BFE;
+--text: #2D3436;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+margin: 0;
+padding: 0;
+font-family: -apple-system, system-ui, sans-serif;
+background-color: var(--bg);
+color: var(--text);
+display: flex;
+flex-direction: column;
+height: 100vh;
+overflow: hidden; /* Evita rebotes extraños en iOS */
+}
+/* Contenedor principal con scroll controlado */
+.safe-area {
+flex: 1;
+display: flex;
+flex-direction: column;
+padding: calc(env(safe-area-inset-top) + 20px) 20px env(safe-area-inset-bottom);
+overflow-y: auto;
+-webkit-overflow-scrolling: touch;
+}
+.header {
+
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 20px;
+}
+.brand { font-weight: 900; color: var(--red); font-size: 1.2rem; }
+
+.stars { background: white; padding: 5px 15px; border-radius: 20px; font-weight: bold; box-
+shadow: 0 4px 0 var(--yellow); }
+
+.lang-selector {
+display: flex;
+justify-content: center;
+gap: 10px;
+margin-bottom: 30px;
+}
+.lang-btn {
+background: white;
+border: 2px solid #f0f0f0;
+padding: 8px 15px;
+border-radius: 12px;
+font-size: 0.8rem;
+font-weight: bold;
+cursor: pointer;
+}
+.lang-btn.active { background: var(--blue); color: white; border-color: var(--blue); }
+.hero { text-align: center; margin-bottom: 30px; }
+.hero h1 { margin: 0; font-size: 2.5rem; font-weight: 900; }
+.hero p { margin: 5px 0; color: #888; font-weight: 600; }
+/* Tarjetas de juego: APILADAS VERTICALMENTE */
+.cards-container {
+display: flex;
+flex-direction: column;
+gap: 20px;
+width: 100%;
+max-width: 400px;
+margin: 0 auto;
+
+}
+.game-card {
+background: white;
+border-radius: 25px;
+padding: 20px;
+display: flex;
+align-items: center;
+text-align: left;
+border: none;
+width: 100%;
+position: relative;
+box-shadow: 0 8px 0 #efefef;
+cursor: pointer;
+transition: transform 0.1s;
+}
+.game-card:active { transform: scale(0.98) translateY(4px); box-shadow: 0 4px 0 #efefef; }
+.game-icon { font-size: 2.5rem; margin-right: 20px; }
+.game-info h3 { margin: 0; font-size: 1.2rem; font-weight: 900; }
+.game-info p { margin: 5px 0 0; font-size: 0.85rem; font-weight: bold; }
+.premium-badge {
+position: absolute;
+top: -10px;
+right: 20px;
+background: var(--red);
+color: white;
+padding: 4px 12px;
+border-radius: 12px;
+font-size: 0.7rem;
+font-weight: 900;
+box-shadow: 0 4px 0 #d63031;
+}
+/* Vistas de Juego */
+.view-overlay {
+position: fixed;
+inset: 0;
+background: var(--bg);
+
+z-index: 1000;
+display: none;
+flex-direction: column;
+padding: 60px 20px;
+}
+.view-overlay.active { display: flex; }
+.back-btn { font-weight: 900; color: var(--blue); margin-bottom: 20px; cursor: pointer; }
+.color-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 15px;
+margin-top: 30px;
+}
+.color-tile {
+height: 120px;
+border-radius: 20px;
+display: flex;
+align-items: center;
+justify-content: center;
+color: white;
+font-weight: 900;
+font-size: 1.2rem;
+box-shadow: 0 6px 0 rgba(0,0,0,0.1);
+text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+/* Modales Parentales */
+.modal-bg {
+position: fixed;
+inset: 0;
+background: rgba(0,0,0,0.8);
+backdrop-filter: blur(5px);
+z-index: 2000;
+display: none;
+align-items: center;
+justify-content: center;
+padding: 20px;
+}
+
+.modal {
+background: white;
+padding: 30px;
+border-radius: 30px;
+width: 100%;
+max-width: 340px;
+text-align: center;
+}
+.numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top:
+20px; }
+.numpad button {
+padding: 15px; border-radius: 15px; border: none; background: #f5f6fa;
+font-size: 1.5rem; font-weight: 900; box-shadow: 0 4px 0 #ddd;
+}
+</style>
+</head>
+<body>
+<div class="safe-area">
+<div class="header">
+<div class="brand">MONTESSORI PRO</div>
+<div class="stars">
+
+⭐
+
+<span id="star-val">0</span></div>
+
+</div>
+<div class="lang-selector">
+<button class="lang-btn active" onclick="setLang('es')">ESP</button>
+<button class="lang-btn" onclick="setLang('en')">ENG</button>
+<button class="lang-btn" onclick="setLang('fr')">FRA</button>
+</div>
+<div class="hero">
+<h1 id="txt-hi">¡Hola!</h1>
+<p id="txt-sub">¿A qué jugamos hoy?</p>
+</div>
+<div class="cards-container">
+<!-- Juego 1: Gratis -->
+<button class="game-card" onclick="openGame('colors')" style="border-left: 8px solid
+var(--green);">
+<span class="game-icon">
+
+🎨
+
+</span>
+
+<div class="game-info">
+
+<h3 id="txt-g1">Colores Mágicos</h3>
+<p style="color: var(--green);" id="txt-free">¡GRATIS!</p>
+</div>
+</button>
+<!-- Juego 2: Premium -->
+<button class="game-card" onclick="checkGate()" style="border-left: 8px solid var(--
+blue);">
+<span class="premium-badge">PREMIUM</span>
+<span class="game-icon">
+
+📐
+
+</span>
+
+<div class="game-info">
+<h3 id="txt-g2">Formas Pro</h3>
+<p id="txt-p1">Explora geometría</p>
+</div>
+</button>
+<!-- Juego 3: Premium -->
+<button class="game-card" onclick="checkGate()" style="border-left: 8px solid var(--
+purple);">
+<span class="premium-badge">PREMIUM</span>
+<span class="game-icon">
+
+🔢
+
+</span>
+
+<div class="game-info">
+<h3 id="txt-g3">Números Pro</h3>
+<p id="txt-p2">Aprende a contar</p>
+</div>
+</button>
+<!-- Juego 4: Premium -->
+<button class="game-card" onclick="checkGate()" style="border-left: 8px solid var(--
+yellow);">
+<span class="premium-badge">PREMIUM</span>
+<span class="game-icon">
+
+🦁
+
+</span>
+
+<div class="game-info">
+<h3 id="txt-g4">Animales</h3>
+<p id="txt-p3">Sonidos salvajes</p>
+</div>
+</button>
+</div>
+</div>
+<!-- Vista Juego Colores -->
+
+<div id="view-colors" class="view-overlay">
+<div class="back-btn" onclick="closeGame()">← VOLVER</div>
+<div style="text-align: center;">
+<p id="txt-find" style="font-weight: 800; color: #888;">BUSCA EL COLOR:</p>
+<h2 id="target-name" style="font-size: 3rem; margin: 0; font-weight: 900;">---</h2>
+</div>
+<div class="color-grid" id="color-grid"></div>
+</div>
+<!-- Modal Parental -->
+<div id="modal-gate" class="modal-bg">
+<div class="modal">
+<p style="font-size: 0.7rem; font-weight: 900; color: #ccc;">SÓLO PARA PADRES</p>
+<h2 id="math-q" style="font-size: 2rem; margin: 10px 0;">5 + 3 = ?</h2>
+<div id="math-ans" style="font-size: 3.5rem; font-weight: 900; color: var(--blue);">?</
+div>
+<div class="numpad">
+<button onclick="pressNum(1)">1</button><button onclick="pressNum(2)">2</
+button><button onclick="pressNum(3)">3</button>
+<button onclick="pressNum(4)">4</button><button onclick="pressNum(5)">5</
+button><button onclick="pressNum(6)">6</button>
+<button onclick="pressNum(7)">7</button><button onclick="pressNum(8)">8</
+button><button onclick="pressNum(9)">9</button>
+<button onclick="clearAns()" style="color:var(--red)">C</button><button
+onclick="pressNum(0)">0</button>
+<button onclick="closeModals()">✕</button>
+</div>
+</div>
+</div>
+<!-- Modal Pago -->
+<div id="modal-pay" class="modal-bg">
+<div class="modal">
+<span style="font-size: 4rem;">
+
+🎁
+
+</span>
+<h2 style="font-weight: 900;">Plan Pro</h2>
+<p style="color: #666;">Acceso total a todos los juegos y futuros lanzamientos.</p>
+
+<div style="background: #f0f9ff; border: 2px solid var(--blue); padding: 15px; border-
+radius: 20px; margin: 20px 0;">
+
+<b style="color: var(--blue);">7 DÍAS GRATIS</b><br>
+<small>Luego solo 2,99€ / mes</small>
+</div>
+
+<button onclick="location.href='https://www.paypal.com/ncp/payment/
+K6HDDM64UAWZC'" style="background: var(--blue); color: white; border: none; width: 100%;
+padding: 18px; border-radius: 20px; font-weight: 900; font-size: 1.1rem; box-shadow: 0 6px 0
+#0097e6;">PROBAR GRATIS</button>
+<p onclick="closeModals()" style="margin-top: 20px; font-weight: bold; color: #ccc;
+cursor: pointer;">MÁS TARDE</p>
+</div>
+</div>
+<script>
+const content = {
+es: { hi: "¡Hola!", sub: "¿A qué jugamos hoy?", g1: "Colores Mágicos", g2: "Formas Pro",
+g3: "Números Pro", g4: "Animales", free: "¡GRATIS!", p1: "Explora geometría", p2: "Aprende a
+contar", p3: "Sonidos salvajes", find: "BUSCA EL COLOR:", colors: {RED: "ROJO", BLUE: "AZUL",
+GREEN: "VERDE", YELLOW: "AMARILLO"} },
+en: { hi: "Hello!", sub: "What shall we play?", g1: "Magic Colors", g2: "Shapes Pro", g3:
+"Numbers Pro", g4: "Animals", free: "FREE!", p1: "Explore geometry", p2: "Learn to count", p3:
+"Wild sounds", find: "FIND THE COLOR:", colors: {RED: "RED", BLUE: "BLUE", GREEN: "GREEN",
+YELLOW: "YELLOW"} },
+fr: { hi: "Salut!", sub: "On joue à quoi ?", g1: "Couleurs", g2: "Formes Pro", g3: "Nombres
+Pro", g4: "Animaux", free: "GRATUIT!", p1: "Géométrie", p2: "Compter", p3: "Sons sauvages",
+find: "CHERCHE LA COULEUR:", colors: {RED: "ROUGE", BLUE: "BLEU", GREEN: "VERT",
+YELLOW: "JAUNE"} }
+};
+let currentLang = 'es';
+let stars = 0;
+let mathTarget = 0;
+let mathInput = "";
+function setLang(l) {
+currentLang = l;
+document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+event.target.classList.add('active');
+updateUI();
+}
+function updateUI() {
+const t = content[currentLang];
+document.getElementById('txt-hi').innerText = t.hi;
+document.getElementById('txt-sub').innerText = t.sub;
+
+document.getElementById('txt-g1').innerText = t.g1;
+document.getElementById('txt-g2').innerText = t.g2;
+document.getElementById('txt-g3').innerText = t.g3;
+document.getElementById('txt-g4').innerText = t.g4;
+document.getElementById('txt-free').innerText = t.free;
+document.getElementById('txt-p1').innerText = t.p1;
+document.getElementById('txt-p2').innerText = t.p2;
+document.getElementById('txt-p3').innerText = t.p3;
+document.getElementById('txt-find').innerText = t.find;
+}
+function openGame(id) {
+document.getElementById('view-colors').classList.add('active');
+initColorGame();
+}
+
+function closeGame() { document.getElementById('view-
+colors').classList.remove('active'); }
+
+function checkGate() {
+const n1 = Math.floor(Math.random() * 5) + 5;
+const n2 = Math.floor(Math.random() * 4) + 1;
+mathTarget = n1 + n2;
+document.getElementById('math-q').innerText = `${n1} + ${n2} = ?`;
+mathInput = "";
+document.getElementById('math-ans').innerText = "?";
+document.getElementById('modal-gate').style.display = 'flex';
+}
+function pressNum(n) {
+mathInput += n;
+document.getElementById('math-ans').innerText = mathInput;
+if(parseInt(mathInput) === mathTarget) {
+document.getElementById('modal-gate').style.display = 'none';
+document.getElementById('modal-pay').style.display = 'flex';
+}
+}
+function clearAns() { mathInput = ""; document.getElementById('math-ans').innerText =
+"?"; }
+function closeModals() { document.querySelectorAll('.modal-bg').forEach(m =>
+
+m.style.display = 'none'); }
+function initColorGame() {
+const colorData = [
+{name: "RED", code: "#FF5E57"}, {name: "BLUE", code: "#18DCFF"},
+{name: "GREEN", code: "#1DD1A1"}, {name: "YELLOW", code: "#FECA57"}
+];
+const target = colorData[Math.floor(Math.random() * 4)];
+document.getElementById('target-name').innerText =
+content[currentLang].colors[target.name];
+document.getElementById('target-name').style.color = target.code;
+const grid = document.getElementById('color-grid');
+grid.innerHTML = '';
+colorData.sort(() => Math.random() - 0.5).forEach(c => {
+const btn = document.createElement('div');
+btn.className = 'color-tile';
+btn.style.backgroundColor = c.code;
+btn.innerText = content[currentLang].colors[c.name];
+btn.onclick = () => {
+if(c.name === target.name) {
+stars += 10;
+document.getElementById('star-val').innerText = stars;
+initColorGame();
+}
+};
+grid.appendChild(btn);
+});
+}
+</script>
+</body>
+</html>
