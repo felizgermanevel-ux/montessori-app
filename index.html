@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,
 user-scalable=no, viewport-fit=cover">
 <title>Montessori Pro</title>
-<!-- Configuración para iPhone -->
+<!-- Configuracion iPhone -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Montessori Pro">
-<!-- Icono Premium para Pantalla de Inicio -->
+<!-- Nuevo Icono (Forzando actualizacion con colores brillantes) -->
 <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/
-svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23FDFCF0'/><circle
-cx='70' cy='30' r='12' fill='%2374b9ff'/><rect x='20' y='20' width='25' height='25' rx='4'
-fill='%23ff7675'/><path d='M50 55 L75 85 L25 85 Z' fill='%2355efc4'/></svg>">
+svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23FF7675'/><circle
+cx='50' cy='50' r='25' fill='white'/><path d='M35 65 L50 35 L65 65 Z' fill='%2374b9ff'/></
+svg>">
 <style>
 :root {
 --bg: #FDFCF0;
@@ -21,354 +21,257 @@ fill='%23ff7675'/><path d='M50 55 L75 85 L25 85 Z' fill='%2355efc4'/></svg>">
 --accent: #FF7675;
 --blue: #007AFF;
 --gold: #f1c40f;
+--green: #55efc4;
 }
 body {
 margin: 0;
-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
-sans-serif;
+font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 background-color: var(--bg);
 color: var(--text);
 height: 100vh;
 display: flex;
 flex-direction: column;
 overflow: hidden;
--webkit-user-select: none;
+touch-action: manipulation;
 }
 
-/* Header */
-header {
-padding: 60px 25px 10px;
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
-.star-counter {
-background: white;
-padding: 8px 16px;
-border-radius: 20px;
-font-weight: 800;
-box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-color: var(--gold);
-}
-/* Menu */
-.main-container {
-flex: 1;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-padding: 20px;
-}
-.logo-display {
-width: 100px;
-height: 100px;
-background: white;
-border-radius: 28px;
-display: flex;
-align-items: center;
-justify-content: center;
-box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-margin-bottom: 25px;
-}
-.activity-card {
-background: white;
+/* UI Global */
 
-width: 100%;
-max-width: 340px;
-padding: 20px;
-border-radius: 25px;
-margin-bottom: 15px;
-display: flex;
-align-items: center;
-box-shadow: 0 5px 15px rgba(0,0,0,0.02);
-border-bottom: 5px solid #f0f0f0;
-cursor: pointer;
-position: relative;
+header { padding: 60px 25px 10px; display: flex; justify-content: space-between; align-
+items: center; }
+
+.stars { background: white; padding: 8px 18px; border-radius: 25px; font-weight: 800; box-
+shadow: 0 4px 10px rgba(0,0,0,0.05); color: var(--gold); }
+
+.menu { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content:
+center; padding: 25px; }
+.card {
+background: white; width: 100%; max-width: 350px; padding: 22px;
+border-radius: 28px; margin-bottom: 20px; display: flex; align-items: center;
+box-shadow: 0 8px 20px rgba(0,0,0,0.03); border-bottom: 6px solid #f0f0f0;
+cursor: pointer; position: relative; transition: transform 0.1s;
 }
-.activity-card:active {
-transform: translateY(3px);
-border-bottom-width: 2px;
+.card:active { transform: scale(0.98); }
+.card-icon { font-size: 2.2rem; margin-right: 20px; }
+.tag-premium {
+background: linear-gradient(135deg, var(--gold), #f39c12); color: white;
+font-size: 0.65rem; font-weight: 900; padding: 4px 12px; border-radius: 12px;
+position: absolute; top: 15px; right: 15px;
 }
-.activity-icon {
-font-size: 2rem;
-margin-right: 15px;
-background: #fdfcf0;
-padding: 10px;
-border-radius: 15px;
-}
-.premium-tag {
-background: linear-gradient(135deg, var(--gold), #f39c12);
-color: white;
-font-size: 0.6rem;
-font-weight: 900;
-padding: 4px 10px;
-border-radius: 10px;
-position: absolute;
-top: 12px;
-right: 12px;
-}
-/* Modales */
+/* Pantallas Modales */
 .overlay {
-position: fixed;
+position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px;
+backdrop-filter: blur(8px);
+}
+.modal { background: white; border-radius: 40px; width: 100%; max-width: 360px; padding:
+35px; text-align: center; }
+/* Juego de Colores (Free) */
+#game-free { display: none; height: 100%; flex-direction: column; align-items: center;
+padding: 60px 20px; }
+.game-canvas { display: flex; justify-content: space-around; width: 100%; margin-top:
+50px; }
+.drop-zone { width: 80px; height: 80px; border: 4px dashed #ddd; border-radius: 20px;
+display: flex; align-items: center; justify-content: center; }
+.piece { width: 70px; height: 70px; border-radius: 15px; cursor: pointer; transition: transform
+0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
-inset: 0;
-background: rgba(0,0,0,0.8);
-display: none;
-align-items: center;
-justify-content: center;
-z-index: 1000;
-padding: 20px;
-backdrop-filter: blur(5px);
-}
-.modal {
-background: white;
-border-radius: 35px;
-width: 100%;
-max-width: 350px;
-padding: 30px;
-text-align: center;
-animation: slideUp 0.3s ease-out;
-}
-@keyframes slideUp {
-from { transform: translateY(20px); opacity: 0; }
-to { transform: translateY(0); opacity: 1; }
-}
-/* Numpad */
-.numpad {
-display: grid;
-grid-template-columns: repeat(3, 1fr);
-gap: 12px;
-margin-top: 20px;
-}
-.numpad button {
-border: none;
-background: #f5f7f9;
-padding: 20px;
-border-radius: 18px;
-font-size: 1.4rem;
-font-weight: 700;
-color: #333;
-
-}
-#display-val {
-font-size: 3rem;
-font-weight: 900;
-color: var(--blue);
-margin: 10px 0;
-min-height: 3.5rem;
-}
-/* Paywall */
-.pay-btn {
-background: var(--blue);
-color: white;
-border: none;
-width: 100%;
-padding: 20px;
-border-radius: 20px;
-font-size: 1.1rem;
-font-weight: 800;
-box-shadow: 0 8px 20px rgba(0,122,255,0.3);
-margin-top: 15px;
-}
-.price-box {
-background: #f0f7ff;
-border: 2px dashed var(--blue);
-border-radius: 20px;
-padding: 15px;
-margin: 20px 0;
-}
-/* Juego */
-#game-area {
-display: none;
-flex-direction: column;
-align-items: center;
-height: 100%;
-padding-top: 60px;
-}
-
-.bead {
-width: 45px;
-height: 45px;
-background: radial-gradient(circle at 35% 35%, #ff7675, #d63031);
-border-radius: 50%;
-margin: 8px;
-box-shadow: 0 5px 0 #b32d2d;
-display: inline-block;
-}
-.tray {
-width: 280px;
-min-height: 180px;
-background: #fffdf9;
-border: 10px solid #D2B48C;
-border-radius: 30px;
-margin-top: 40px;
-display: flex;
-flex-wrap: wrap;
-justify-content: center;
-padding: 15px;
+/* Botonera Barrera Parental */
+.numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top:
+25px; }
+.numpad button { border: none; background: #f8f9fa; padding: 20px; border-radius: 20px;
+font-size: 1.4rem; font-weight: 700; }
+/* Estilo Checkout */
+.btn-checkout {
+background: var(--blue); color: white; border: none; width: 100%;
+padding: 20px; border-radius: 22px; font-size: 1.2rem; font-weight: 800;
+box-shadow: 0 10px 25px rgba(0,122,255,0.3); margin-top: 15px;
 }
 </style>
 </head>
 <body>
-<div id="view-menu">
+<!-- Menu Principal -->
+<div id="screen-menu">
 <header>
-<div style="font-weight: 900; letter-spacing: -0.5px;">MONTESSORI PRO</div>
-<div class="star-counter">
+<div style="font-weight: 900; font-size: 1.2rem;">MONTESSORI PRO</div>
+<div class="stars">
 
 ⭐
 
-<span id="stars">0</span></div>
+<span id="star-count">0</span></div>
 
 </header>
-<div class="main-container">
-<div class="logo-display">
-<svg width="60" height="60" viewBox="0 0 100 100">
-<rect x="20" y="20" width="25" height="25" rx="5" fill="#FF7675" />
-<circle cx="70" cy="32" r="14" fill="#74b9ff" />
-<path d="M50 60 L80 90 L20 90 Z" fill="#55efc4" />
-</svg>
-</div>
+<div class="menu">
+<h1 style="margin: 0; font-size: 2.2rem; font-weight: 900;">¡A jugar!</h1>
+<p style="color: #bbb; margin-bottom: 40px;">Selecciona una actividad</p>
+<div class="card" onclick="openGameFree()">
+<div class="card-icon">
 
-<h1 style="margin: 0; font-size: 2rem; font-weight: 900;">¡Hola!</h1>
-<p style="color: #aaa; margin-bottom: 30px;">Aprendizaje sensorial avanzado</p>
-<div class="activity-card" onclick="startBeads()">
-<div class="activity-icon">
-
-🧮
+🎨
 
 </div>
 
 <div>
-<div style="font-weight: 800;">Contar Perlas</div>
-<div style="font-size: 0.8rem; color: #bbb;">Nivel Inicial • Gratis</div>
+<div style="font-weight: 800;">Colores Mágicos</div>
+<div style="font-size: 0.8rem; color: var(--green); font-weight: bold;">GRATIS</div>
 </div>
 </div>
-<div class="activity-card" onclick="openGate()">
-<div class="premium-tag">PREMIUM</div>
-<div class="activity-icon">
+<div class="card" onclick="openGate()">
+<div class="tag-premium">PREMIUM</div>
+<div class="card-icon">
 
-🔺
+📐
 
 </div>
 
 <div>
 <div style="font-weight: 800;">Geometría Pro</div>
-<div style="font-size: 0.8rem; color: #bbb;">Prueba de 7 días incluida</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Barrera de Seguridad -->
-<div id="gate-modal" class="overlay">
-<div class="modal">
-<div style="font-size: 0.7rem; font-weight: 900; color: #ddd; letter-spacing: 2px;">SOLO
-PADRES</div>
-<p style="font-weight: 700; margin: 15px 0;">Resuelve para ver opciones de pago:</p>
-<div id="math-q" style="font-size: 1.8rem; font-weight: 900;">9 + 6 = ?</div>
-<div id="display-val">?</div>
-<div class="numpad">
-<button onclick="press('1')">1</button><button onclick="press('2')">2</
-button><button onclick="press('3')">3</button>
-<button onclick="press('4')">4</button><button onclick="press('5')">5</
-button><button onclick="press('6')">6</button>
-<button onclick="press('7')">7</button><button onclick="press('8')">8</
-button><button onclick="press('9')">9</button>
-<button onclick="clr()" style="color:var(--accent)">C</button><button
-onclick="press('0')">0</button>
-<button onclick="closeModals()">✕</button>
-</div>
+<div style="font-size: 0.8rem; color: #aaa;">Desbloquear contenido</div>
 
 </div>
 </div>
-<!-- Pantalla de Suscripción -->
-<div id="pay-modal" class="overlay">
+</div>
+</div>
+<!-- Juego Free: Colores -->
+<div id="game-free">
+<div onclick="backToMenu()" style="align-self: flex-start; font-weight: bold; color:
+#ccc;">← VOLVER</div>
+<h2 style="margin-top: 30px; font-weight: 900;">¡Ordena los colores!</h2>
+<p>Arrastra cada color a su sitio</p>
+<div class="game-canvas" id="pieces-container">
+<!-- Piezas generadas por JS -->
+</div>
+<div class="game-canvas" style="margin-top: 80px;">
+<div class="drop-zone" id="zone-red" style="background: #ffecec;"></div>
+<div class="drop-zone" id="zone-blue" style="background: #ecf4ff;"></div>
+<div class="drop-zone" id="zone-green" style="background: #ecfffa;"></div>
+</div>
+</div>
+<!-- Modal: Barrera Parental -->
+<div id="modal-gate" class="overlay">
+<div class="modal">
+<div style="font-size: 0.7rem; font-weight: 900; color: #ccc; letter-spacing: 2px;">SOLO
+PADRES</div>
+<p style="font-weight: 700; margin: 20px 0 10px;">Verifica tu edad:</p>
+<div id="math-question" style="font-size: 1.8rem; font-weight: 900;">8 + 7 = ?</div>
+<div id="math-ans" style="font-size: 3.5rem; font-weight: 900; color: var(--blue); margin:
+10px;">?</div>
+<div class="numpad">
+<button onclick="add('1')">1</button><button onclick="add('2')">2</button><button
+onclick="add('3')">3</button>
+<button onclick="add('4')">4</button><button onclick="add('5')">5</button><button
+onclick="add('6')">6</button>
+<button onclick="add('7')">7</button><button onclick="add('8')">8</button><button
+onclick="add('9')">9</button>
+<button onclick="resetMath()" style="color:var(--accent)">C</button><button
+onclick="add('0')">0</button>
+
+<button onclick="backToMenu()">✕</button>
+</div>
+</div>
+</div>
+<!-- Modal: Pago (Paywall) -->
+<div id="modal-pay" class="overlay">
 <div class="modal">
 <div style="font-size: 3rem; margin-bottom: 10px;">
 
-💎
+🚀
 
 </div>
-<h2 style="font-weight: 900; margin: 0;">Suscripción Pro</h2>
-<p style="color: #888; font-size: 0.9rem; margin-top: 10px;">Acceso total a todos los
-juegos, formas y colores.</p>
-<div class="price-box">
-<div style="color: var(--blue); font-weight: 900; font-size: 1.1rem;">7 DÍAS GRATIS</
+<h2 style="font-weight: 900; margin: 0;">Plan Montessori Pro</h2>
+<p style="color: #777; font-size: 0.9rem; margin-top: 10px;">Acceso a Geometría, Letras
+y Matemáticas avanzadas.</p>
+<div style="background: #f0f7ff; border: 2px dashed var(--blue); border-radius: 20px;
+padding: 15px; margin: 20px 0;">
+<div style="color: var(--blue); font-weight: 900;">7 DÍAS GRATIS</div>
+<div style="font-size: 0.8rem; color: #555;">Después 2,99€ / mes. Sin compromiso.</
 div>
-<div style="font-size: 0.85rem; color: #666; margin-top: 4px;">Después 2,99€ / mes</
-div>
 </div>
-<button class="pay-btn" onclick="goToPaypal()">EMPEZAR PRUEBA</button>
-
-<p onclick="closeModals()" style="color: #ccc; font-weight: bold; margin-top: 20px; font-
-size: 0.8rem;">VOLVER ATRÁS</p>
-
+<button class="btn-checkout" onclick="window.location.href='https://www.paypal.com/
+ncp/payment/K6HDDM64UAWZC'">EMPEZAR PRUEBA</button>
+<p onclick="backToMenu()" style="color: #bbb; margin-top: 20px; font-weight: bold;
+font-size: 0.8rem; cursor: pointer;">MÁS TARDE</p>
 </div>
-</div>
-<!-- Area de Juego Gratis -->
-<div id="game-area">
-<div onclick="closeModals()" style="font-weight: bold; color: #ccc; align-self: flex-start;
-padding-left: 20px;">← MENÚ</div>
-<h2 style="margin-top: 40px; font-weight: 900;">Pon 3 perlas en la bandeja</h2>
-<div id="source" style="margin-top: 20px;"></div>
-<div class="tray" id="target"></div>
 </div>
 <script>
 let stars = 0;
-let count = 0;
-let currentInput = "";
-let secretAnswer = 15;
-const PAYPAL_LINK = "https://www.paypal.com/ncp/payment/K6HDDM64UAWZC";
+let mathInput = "";
+let mathResult = 15;
+// Navegacion
+function backToMenu() {
+document.querySelectorAll('.overlay').forEach(m => m.style.display = 'none');
+document.getElementById('screen-menu').style.display = 'block';
+document.getElementById('game-free').style.display = 'none';
+}
+// Logica Barrera
 function openGate() {
 
-const a = Math.floor(Math.random() * 8) + 2;
-const b = Math.floor(Math.random() * 8) + 2;
-secretAnswer = a + b;
-document.getElementById('math-q').innerText = `${a} + ${b} = ?`;
-document.getElementById('gate-modal').style.display = 'flex';
-clr();
+const n1 = Math.floor(Math.random() * 9) + 2;
+const n2 = Math.floor(Math.random() * 9) + 2;
+mathResult = n1 + n2;
+document.getElementById('math-question').innerText = `${n1} + ${n2} = ?`;
+document.getElementById('modal-gate').style.display = 'flex';
+resetMath();
 }
-function closeModals() {
-document.querySelectorAll('.overlay').forEach(m => m.style.display = 'none');
-document.getElementById('view-menu').style.display = 'block';
-document.getElementById('game-area').style.display = 'none';
-}
-function clr() { currentInput = ""; document.getElementById('display-val').innerText = "?"; }
-function press(n) {
-currentInput += n;
-document.getElementById('display-val').innerText = currentInput;
-if(parseInt(currentInput) === secretAnswer) {
+function resetMath() { mathInput = ""; document.getElementById('math-ans').innerText =
+"?"; }
+function add(n) {
+mathInput += n;
+document.getElementById('math-ans').innerText = mathInput;
+if(parseInt(mathInput) === mathResult) {
 setTimeout(() => {
-document.getElementById('gate-modal').style.display = 'none';
-document.getElementById('pay-modal').style.display = 'flex';
+document.getElementById('modal-gate').style.display = 'none';
+document.getElementById('modal-pay').style.display = 'flex';
 }, 200);
-} else if(currentInput.length >= 2) {
-setTimeout(clr, 500);
+} else if(mathInput.length >= 2) {
+setTimeout(resetMath, 500);
 }
 }
-function goToPaypal() {
-window.location.href = PAYPAL_LINK;
+// Juego Free (Color Matching)
+function openGameFree() {
+document.getElementById('screen-menu').style.display = 'none';
+document.getElementById('game-free').style.display = 'flex';
+setupColorGame();
 }
-function startBeads() {
-document.getElementById('view-menu').style.display = 'none';
-document.getElementById('game-area').style.display = 'flex';
-count = 0;
-document.getElementById('target').innerHTML = '';
-const s = document.getElementById('source');
-s.innerHTML = '';
-for(let i=0; i<5; i++) {
+function setupColorGame() {
+const container = document.getElementById('pieces-container');
+container.innerHTML = '';
+const colors = [
+{ hex: '#FF7675', id: 'red' },
+{ hex: '#74b9ff', id: 'blue' },
+{ hex: '#55efc4', id: 'green' }
+];
+// Mezclamos piezas
 
-const b = document.createElement('div');
-b.className = 'bead';
-b.onclick = function() {
-document.getElementById('target').appendChild(this);
-count++;
-if(count === 3) {
-stars += 10;
-document.getElementById('stars').innerText = stars;
-setTimeout(() => { alert("¡Excelente trabajo!"); closeModals(); }, 300);
+colors.sort(() => Math.random() - 0.5).forEach(c => {
+const p = document.createElement('div');
+p.className = 'piece';
+p.style.backgroundColor = c.hex;
+p.onclick = () => checkPiece(c.id, p);
+container.appendChild(p);
+});
 }
-};
-s.appendChild(b);
+let solved = 0;
+function checkPiece(colorId, element) {
+const target = document.getElementById('zone-' + colorId);
+if(target.innerHTML === "") {
+target.appendChild(element);
+element.style.transform = "scale(0.8)";
+solved++;
+if(solved === 3) {
+stars += 5;
+document.getElementById('star-count').innerText = stars;
+setTimeout(() => {
+alert("¡Fabuloso!
+
+✨
+
+Has ganado 5 estrellas.");
+
+solved = 0;
+backToMenu();
+}, 500);
+}
 }
 }
 </script>
