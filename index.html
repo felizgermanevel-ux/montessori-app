@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,
 user-scalable=no, viewport-fit=cover">
-<title>Montessori Pro</title>
+<title>Montessori Pro - Global</title>
+<!-- Metadatos de App Nativa -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Montessori">
@@ -19,387 +20,492 @@ user-scalable=no, viewport-fit=cover">
 --purple: #A29BFE;
 --orange: #ff9f43;
 --text: #2D3436;
+--shadow: 0 8px 0 rgba(0,0,0,0.05);
 }
 * {
 box-sizing: border-box;
 -webkit-tap-highlight-color: transparent;
 user-select: none;
+outline: none;
 }
 body {
 margin: 0;
 padding: 0;
-font-family: -apple-system, system-ui, sans-serif;
+font-family: 'Rounded Mplus 1c', -apple-system, BlinkMacSystemFont, sans-serif;
 background-color: var(--bg);
 color: var(--text);
-overflow: hidden;
-height: 100vh;
-}
+overflow: hidden; /* Evita scroll infinito */
 
-.app-container {
+height: 100vh;
+width: 100vw;
+}
+/* Layout Principal Optimizado */
+.app-shell {
 display: flex;
 flex-direction: column;
 height: 100%;
-padding: calc(env(safe-area-inset-top) + 10px) 20px env(safe-area-inset-bottom);
-overflow-y: auto;
+width: 100%;
+padding: calc(env(safe-area-inset-top) + 15px) 20px env(safe-area-inset-bottom);
 }
+/* Header con animacion de estrellas */
 .header {
 display: flex;
 justify-content: space-between;
 align-items: center;
-margin-bottom: 15px;
+height: 50px;
 }
-.brand { font-weight: 900; color: var(--red); font-size: 1rem; }
-.stars-pill {
+.brand-logo {
+font-weight: 900;
+color: var(--red);
+font-size: 1.2rem;
+text-transform: uppercase;
+letter-spacing: -0.5px;
+}
+.score-badge {
 background: white;
-padding: 6px 12px;
-border-radius: 20px;
-font-weight: 800;
+padding: 8px 16px;
+border-radius: 50px;
+font-weight: 900;
 box-shadow: 0 4px 0 var(--yellow);
+transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-.lang-bar {
+.score-bump { transform: scale(1.3); }
+/* Selector de idiomas compacto */
+
+.lang-grid {
 display: flex;
-flex-wrap: wrap;
 justify-content: center;
 gap: 6px;
-margin-bottom: 20px;
+margin: 20px 0;
 }
-.lang-btn {
+.btn-lang {
 background: white;
-border: 2px solid #eee;
-padding: 5px 10px;
-border-radius: 10px;
-font-size: 0.65rem;
+border: 2px solid #efefef;
+padding: 6px 12px;
+border-radius: 14px;
+font-size: 0.7rem;
 font-weight: 800;
-color: #777;
-
+color: #bdc3c7;
+transition: all 0.2s;
 }
-.lang-btn.active {
+.btn-lang.active {
 background: var(--blue);
 color: white;
 border-color: var(--blue);
-box-shadow: 0 3px 0 #0097e6;
+box-shadow: 0 4px 0 #0097e6;
+transform: translateY(-2px);
 }
-.welcome-section { text-align: center; margin-bottom: 20px; }
-.welcome-section h1 { margin: 0; font-size: 2.2rem; font-weight: 900; }
-.welcome-section p { margin: 5px 0; color: #888; font-weight: 700; }
-.game-list {
-display: flex;
-flex-direction: column;
-gap: 12px;
+/* Hero Area */
+.hero { text-align: center; margin-bottom: 25px; }
+.hero h1 { margin: 0; font-size: 2.8rem; font-weight: 900; line-height: 1; }
+.hero p { margin: 5px 0; color: #95a5a6; font-weight: 700; font-size: 1.1rem; }
+/* Lista de Juegos con Scroll Suave */
+.menu-scroll {
+flex: 1;
+overflow-y: auto;
 padding-bottom: 30px;
+-webkit-overflow-scrolling: touch;
 }
-.card {
+.game-card {
 background: white;
-border-radius: 20px;
-padding: 15px;
+
+border-radius: 28px;
+padding: 20px;
 display: flex;
 align-items: center;
 border: none;
 width: 100%;
-text-align: left;
-box-shadow: 0 6px 0 #f0f0f0;
-cursor: pointer;
+margin-bottom: 15px;
 position: relative;
+box-shadow: var(--shadow);
+cursor: pointer;
+transition: transform 0.1s, box-shadow 0.1s;
 }
-.card:active { transform: translateY(3px); box-shadow: 0 2px 0 #f0f0f0; }
-.card-icon { font-size: 2.2rem; margin-right: 15px; min-width: 45px; text-align: center; }
-.card-content h3 { margin: 0; font-size: 1.1rem; font-weight: 800; }
-.card-content p { margin: 2px 0 0; font-size: 0.8rem; font-weight: 600; color: #999; }
-.badge-premium {
+.game-card:active {
+transform: translateY(4px);
+box-shadow: 0 2px 0 rgba(0,0,0,0.05);
+}
+.icon-box {
+width: 60px;
+height: 60px;
+border-radius: 18px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 2.5rem;
+margin-right: 18px;
+}
+.card-text h3 { margin: 0; font-size: 1.3rem; font-weight: 900; color: #2d3436; }
+.card-text p { margin: 4px 0 0; font-size: 0.9rem; font-weight: 700; color: #b2bec3; }
+.premium-tag {
 position: absolute;
-
-top: 8px;
-right: 12px;
+top: 15px;
+right: 15px;
 background: var(--red);
 color: white;
-padding: 2px 8px;
-border-radius: 8px;
+padding: 4px 10px;
+border-radius: 12px;
 font-size: 0.6rem;
+
 font-weight: 900;
+text-transform: uppercase;
 }
-.overlay {
+/* Overlays y Modales Nativa-Style */
+.screen-overlay {
 position: fixed;
 inset: 0;
 background: var(--bg);
 z-index: 1000;
 display: none;
 flex-direction: column;
-padding: 50px 20px;
+padding: 60px 25px;
+animation: slideUp 0.3s ease-out;
 }
-.modal-parental {
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.btn-back {
+position: absolute;
+top: calc(env(safe-area-inset-top) + 10px);
+left: 20px;
+font-weight: 900;
+color: var(--blue);
+font-size: 1rem;
+padding: 10px;
+}
+/* Grid de Colores */
+.game-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 15px;
+margin-top: 40px;
+}
+.tile {
+height: 150px;
+border-radius: 30px;
+display: flex;
+align-items: center;
+
+justify-content: center;
+color: white;
+font-weight: 900;
+font-size: 1.4rem;
+box-shadow: 0 8px 0 rgba(0,0,0,0.1);
+}
+/* Gate Modal Parental */
+.modal-bg {
 position: fixed;
 inset: 0;
-background: rgba(0,0,0,0.85);
+background: rgba(45, 52, 54, 0.96);
+backdrop-filter: blur(10px);
 z-index: 2000;
 display: none;
 align-items: center;
 justify-content: center;
 padding: 20px;
-backdrop-filter: blur(5px);
 }
-.modal-content {
+.modal-body {
 background: white;
 width: 100%;
-max-width: 320px;
-padding: 25px;
-border-radius: 30px;
+max-width: 360px;
+border-radius: 40px;
+padding: 30px;
 text-align: center;
 }
-
-.numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top:
-15px; }
-
-.num-btn { background: #f8f9fa; border: none; padding: 15px; border-radius: 15px; font-
-size: 1.3rem; font-weight: 900; box-shadow: 0 4px 0 #ddd; }
-
-.num-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #ddd; }
-.color-box-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 30px; }
-.color-option {
-height: 120px; border-radius: 20px; display: flex; align-items: center; justify-content:
-center;
-color: white; font-weight: 900; font-size: 1.1rem; box-shadow: 0 6px 0 rgba(0,0,0,0.1);
+.num-pad {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 12px;
+margin-top: 25px;
 }
-.btn-pay {
-background: var(--blue); color: white; border: none; width: 100%; padding: 18px;
-border-radius: 18px; font-weight: 900; font-size: 1.1rem; margin-top: 15px; box-shadow: 0
-6px 0 #0097e6;
+.btn-num {
+background: #f1f2f6;
+border: none;
+padding: 20px;
+border-radius: 20px;
+
+font-size: 1.6rem;
+font-weight: 900;
+box-shadow: 0 5px 0 #dfe4ea;
+}
+.btn-num:active { transform: translateY(3px); box-shadow: 0 2px 0 #dfe4ea; }
+.btn-checkout {
+background: var(--blue);
+color: white;
+border: none;
+width: 100%;
+padding: 22px;
+border-radius: 22px;
+font-weight: 900;
+font-size: 1.3rem;
+margin-top: 20px;
+box-shadow: 0 8px 0 #0097e6;
 }
 </style>
 </head>
 <body>
-<div class="app-container">
+<div class="app-shell">
 <div class="header">
-<div class="brand">MONTESSORI PRO</div>
-<div class="stars-pill">
+<div class="brand-logo">Montessori Pro</div>
+<div class="score-badge" id="badge">
 
 ⭐
 
-<span id="star-count">0</span></div>
+<span id="val-stars">0</span></div>
 
 </div>
-<div class="lang-bar">
-<button class="lang-btn active" onclick="changeLang('es', this)">ESP</button>
-<button class="lang-btn" onclick="changeLang('en', this)">ENG</button>
-<button class="lang-btn" onclick="changeLang('fr', this)">FRA</button>
-<button class="lang-btn" onclick="changeLang('it', this)">ITA</button>
-<button class="lang-btn" onclick="changeLang('nl', this)">NED</button>
+<div class="lang-grid">
+<button class="btn-lang active" onclick="setAppLang('es', this)">ES</button>
+<button class="btn-lang" onclick="setAppLang('en', this)">EN</button>
+<button class="btn-lang" onclick="setAppLang('fr', this)">FR</button>
+<button class="btn-lang" onclick="setAppLang('it', this)">IT</button>
+<button class="btn-lang" onclick="setAppLang('nl', this)">NL</button>
 </div>
-<div class="welcome-section">
-<h1 id="ui-hi">¡Hola!</h1>
-<p id="ui-sub">¿A qué jugamos hoy?</p>
-</div>
+<div class="hero">
+<h1 id="txt-hi">¡Hola!</h1>
+<p id="txt-sub">¿Listo para aprender?</p>
 
-<div class="game-list">
-<!-- JUEGO 1 (GRATIS) -->
-<button class="card" onclick="startColors()" style="border-left: 10px solid var(--
-green);">
-<span class="card-icon">
+</div>
+<div class="menu-scroll">
+<!-- JUEGO 1: COLORES -->
+<button class="game-card" onclick="launchGame('colors')">
+<div class="icon-box" style="background: #e8fcf6;">
 
 🎨
 
-</span>
+</div>
 
-<div class="card-content">
-<h3 id="ui-g1">Colores Mágicos</h3>
-<p style="color: var(--green);" id="ui-free">¡GRATIS!</p>
+<div class="card-text">
+<h3 id="g1-t">Colores Mágicos</h3>
+<p id="g1-d" style="color: var(--green);">¡GRATIS!</p>
 </div>
 </button>
-<!-- JUEGO 2 (PREMIUM) -->
-<button class="card" onclick="openGate()" style="border-left: 10px solid var(--blue);">
-<div class="badge-premium">PREMIUM</div>
-<span class="card-icon">
+<!-- JUEGO 2: FORMAS -->
+<button class="game-card" onclick="parentalGate()">
+<div class="premium-tag">PRO</div>
+<div class="icon-box" style="background: #e3f2fd;">
 
 📐
 
-</span>
+</div>
 
-<div class="card-content">
-<h3 id="ui-g2">Formas Pro</h3>
-<p id="ui-d1">Explora geometría</p>
+<div class="card-text">
+<h3 id="g2-t">Formas Pro</h3>
+<p id="g2-d">Geometría divertida</p>
 </div>
 </button>
-<!-- JUEGO 3 (PREMIUM) -->
-<button class="card" onclick="openGate()" style="border-left: 10px solid var(--
-purple);">
-<div class="badge-premium">PREMIUM</div>
-<span class="card-icon">
+<!-- JUEGO 3: NUMEROS -->
+<button class="game-card" onclick="parentalGate()">
+<div class="premium-tag">PRO</div>
+<div class="icon-box" style="background: #f3e5f5;">
 
 🔢
 
-</span>
+</div>
 
-<div class="card-content">
-<h3 id="ui-g3">Números Pro</h3>
-<p id="ui-d2">Aprende a contar</p>
+<div class="card-text">
+<h3 id="g3-t">Números Pro</h3>
+<p id="g3-d">Aprende a contar</p>
 </div>
 </button>
-<!-- JUEGO 4 (PREMIUM) -->
-<button class="card" onclick="openGate()" style="border-left: 10px solid var(--
-orange);">
-<div class="badge-premium">PREMIUM</div>
-<span class="card-icon">
+<!-- JUEGO 4: ANIMALES -->
+<button class="game-card" onclick="parentalGate()">
+<div class="premium-tag">PRO</div>
+<div class="icon-box" style="background: #fff3e0;">
 
 🦁
 
+</div>
+
+<div class="card-text">
+<h3 id="g4-t">Animales</h3>
+<p id="g4-d">Sonidos y nombres</p>
+</div>
+</button>
+
+</div>
+</div>
+<!-- VISTA JUEGO: COLORES -->
+<div id="view-colors" class="screen-overlay">
+<div class="btn-back" onclick="exitGame()">✕ SALIR</div>
+<div style="text-align: center; margin-top: 20px;">
+<p id="txt-find" style="color: #95a5a6; font-weight: 800; text-transform:
+uppercase;">Busca el color</p>
+<h2 id="color-target" style="font-size: 3.5rem; margin: 0; font-weight: 900;">---</h2>
+</div>
+<div class="game-grid" id="grid-colors"></div>
+</div>
+<!-- MODAL CONTROL PARENTAL -->
+<div id="modal-gate" class="modal-bg">
+<div class="modal-body">
+<p id="txt-adults" style="font-weight: 900; color: #ccc; font-size: 0.7rem; letter-spacing:
+2px;">SOLO PADRES</p>
+<h2 id="math-q" style="font-size: 2.2rem; margin: 15px 0;">5 + 3 = ?</h2>
+<div id="math-input" style="font-size: 3.5rem; font-weight: 900; color: var(--blue);
+height: 60px;">?</div>
+<div class="num-pad">
+<button class="btn-num" onclick="inputNum(1)">1</button>
+<button class="btn-num" onclick="inputNum(2)">2</button>
+<button class="btn-num" onclick="inputNum(3)">3</button>
+<button class="btn-num" onclick="inputNum(4)">4</button>
+<button class="btn-num" onclick="inputNum(5)">5</button>
+<button class="btn-num" onclick="inputNum(6)">6</button>
+<button class="btn-num" onclick="inputNum(7)">7</button>
+<button class="btn-num" onclick="inputNum(8)">8</button>
+<button class="btn-num" onclick="inputNum(9)">9</button>
+<button class="btn-num" style="color: var(--red)" onclick="clearMath()">C</button>
+<button class="btn-num" onclick="inputNum(0)">0</button>
+<button class="btn-num" onclick="hideModals()">✕</button>
+</div>
+</div>
+</div>
+<!-- MODAL MONETIZACION -->
+<div id="modal-pay" class="modal-bg">
+
+<div class="modal-body">
+<span style="font-size: 4.5rem;">
+
+💎
+
 </span>
 
-<div class="card-content">
-<h3 id="ui-g4">Animales</h3>
-<p id="ui-d3">Sonidos de la selva</p>
+<h2 id="txt-pay-t" style="font-weight: 900; font-size: 1.8rem; margin: 10px 0;">Versión
+Completa</h2>
+<p id="txt-pay-d" style="color: #636e72; font-weight: 600;">Desbloquea todos los
+juegos y futuras actualizaciones.</p>
+<div style="background: #f1f2f6; padding: 20px; border-radius: 25px; margin: 20px 0;">
+<span style="color: var(--blue); font-weight: 900; font-size: 1.4rem;">2,99€ / mes</
+span><br>
+<small id="txt-trial" style="font-weight: 800; color: var(--green);">7 DÍAS DE PRUEBA
+GRATIS</small>
 </div>
-
-</button>
-</div>
-</div>
-<!-- PANTALLA JUEGO COLORES -->
-<div id="game-colors" class="overlay">
-<div onclick="closeOverlays()" style="font-weight: 900; color: var(--blue); cursor:
-pointer;">✕ CERRAR</div>
-<div style="text-align: center; margin-top: 20px;">
-<p id="ui-find" style="color: #999; font-weight: 800;">BUSCA EL COLOR:</p>
-<h2 id="target-color-name" style="font-size: 2.5rem; margin: 0; font-weight: 900;">---</
-h2>
-</div>
-<div class="color-box-grid" id="color-options"></div>
-</div>
-<!-- MODAL SEGURIDAD PADRES -->
-<div id="gate-modal" class="modal-parental">
-<div class="modal-content">
-<p id="ui-adults" style="font-size: 0.6rem; font-weight: 900; color: #bbb;">ÁREA DE
-PADRES</p>
-<h2 id="math-question" style="font-size: 1.8rem; margin: 10px 0;">5 + 2 = ?</h2>
-<div id="math-display" style="font-size: 3rem; font-weight: 900; color: var(--blue);">?</
-div>
-<div class="numpad">
-<button class="num-btn" onclick="typeNum(1)">1</button><button class="num-btn"
-onclick="typeNum(2)">2</button><button class="num-btn" onclick="typeNum(3)">3</button>
-<button class="num-btn" onclick="typeNum(4)">4</button><button class="num-btn"
-onclick="typeNum(5)">5</button><button class="num-btn" onclick="typeNum(6)">6</button>
-<button class="num-btn" onclick="typeNum(7)">7</button><button class="num-btn"
-onclick="typeNum(8)">8</button><button class="num-btn" onclick="typeNum(9)">9</button>
-<button class="num-btn" onclick="clearMath()" style="color: var(--red);">C</
-button><button class="num-btn" onclick="typeNum(0)">0</button>
-<button class="num-btn" onclick="closeOverlays()">✕</button>
-</div>
-</div>
-</div>
-<!-- MODAL PAGO -->
-<div id="pay-modal" class="modal-parental">
-<div class="modal-content">
-
-<div style="font-size: 3.5rem;">
-
-✨
-
-</div>
-
-<h2 id="ui-pay-title" style="font-weight: 900;">Acceso Total</h2>
-<p id="ui-pay-desc" style="color: #7f8c8d;">Prueba gratuita de 7 días. Luego 2,99€ /
-mes.</p>
-<button class="btn-pay" onclick="window.location.href='https://www.paypal.com/ncp/
-payment/K6HDDM64UAWZC'">SUSCRIBIRSE</button>
-<p onclick="closeOverlays()" style="margin-top: 15px; font-weight: 800; color: #ccc;
+<button class="btn-checkout" onclick="window.location.href='https://www.paypal.com/
+ncp/payment/K6HDDM64UAWZC'">SUSCRIBIRSE</button>
+<p onclick="hideModals()" style="margin-top: 20px; font-weight: 800; color: #b2bec3;
 cursor: pointer;">MÁS TARDE</p>
 </div>
 </div>
 <script>
-const texts = {
-es: { hi: "¡Hola!", sub: "¿A qué jugamos hoy?", g1: "Colores Mágicos", g2: "Formas Pro",
-g3: "Números Pro", g4: "Animales", free: "¡GRATIS!", d1: "Explora geometría", d2: "Aprende a
-contar", d3: "Sonidos de la selva", find: "BUSCA EL COLOR:", adults: "ÁREA DE PADRES", payT:
-"Acceso Total", payD: "Prueba 7 días gratis. Luego 2,99€/mes.", colors: {RED: "ROJO", BLUE:
-"AZUL", GREEN: "VERDE", YELLOW: "AMARILLO"} },
-en: { hi: "Hello!", sub: "What to play?", g1: "Magic Colors", g2: "Shapes Pro", g3:
-"Numbers Pro", g4: "Animals", free: "FREE!", d1: "Explore geometry", d2: "Learn to count", d3:
-"Jungle sounds", find: "FIND THE COLOR:", adults: "PARENTS ONLY", payT: "Full Access", payD:
-"7 days free trial. Then 2.99€/mo.", colors: {RED: "RED", BLUE: "BLUE", GREEN: "GREEN",
-YELLOW: "YELLOW"} },
-fr: { hi: "Salut!", sub: "On joue ?", g1: "Couleurs", g2: "Formes Pro", g3: "Nombres Pro",
-g4: "Animaux", free: "GRATUIT!", d1: "Géométrie", d2: "Compter", d3: "Sons de la jungle", find:
-"CHERCHE LA COULEUR:", adults: "ZONE PARENTS", payT: "Accès Total", payD: "Essai 7 jours.
-Puis 2,99€/mois.", colors: {RED: "ROUGE", BLUE: "BLEU", GREEN: "VERT", YELLOW: "JAUNE"} },
-it: { hi: "Ciao!", sub: "A cosa giochiamo?", g1: "Colori Magici", g2: "Forme Pro", g3:
-"Numeri Pro", g4: "Animali", free: "GRATIS!", d1: "Esplora la geometria", d2: "Impara a contare",
-d3: "Suoni della giungla", find: "CERCA IL COLORE:", adults: "AREA GENITORI", payT: "Accesso
-Totale", payD: "Prova 7 giorni. Poi 2,99€/mese.", colors: {RED: "ROSSO", BLUE: "BLU", GREEN:
-"VERDE", YELLOW: "GIALLO"} },
-nl: { hi: "Hoi!", sub: "Wat gaan we spelen?", g1: "Magische Kleuren", g2: "Vormen Pro", g3:
-"Getallen Pro", g4: "Dieren", free: "GRATIS!", d1: "Geometrie ontdekken", d2: "Leren tellen", d3:
-"Junglegeluiden", find: "ZOEK DE KLEUR:", adults: "OUDERZONE", payT: "Volledige Toegang",
-payD: "7 dagen gratis. Daarna 2,99€/mnd.", colors: {RED: "ROOD", BLUE: "BLAUW", GREEN:
+const dict = {
+es: { hi: "¡Hola!", sub: "¿Listo para jugar?", g1t: "Colores Mágicos", g1d: "¡GRATIS!", g2t:
+"Formas Pro", g2d: "Geometría divertida", g3t: "Números Pro", g3d: "Aprende a contar", g4t:
+"Animales", g4d: "Sonidos y nombres", find: "Busca el color", adults: "SÓLO PADRES", payT:
+"Acceso Total", payD: "Desbloquea todo el contenido.", trial: "7 DÍAS GRATIS", colors: {RED:
+"ROJO", BLUE: "AZUL", GREEN: "VERDE", YELLOW: "AMARILLO"} },
+en: { hi: "Hello!", sub: "Ready to play?", g1t: "Magic Colors", g1d: "FREE!", g2t: "Shapes
+Pro", g2d: "Fun Geometry", g3t: "Numbers Pro", g3d: "Learn to count", g4t: "Animals", g4d:
+"Sounds & names", find: "Find the color", adults: "PARENTS ONLY", payT: "Full Access", payD:
+"Unlock all games.", trial: "7 DAYS FREE TRIAL", colors: {RED: "RED", BLUE: "BLUE", GREEN:
+"GREEN", YELLOW: "YELLOW"} },
+fr: { hi: "Salut!", sub: "On joue?", g1t: "Couleurs", g1d: "GRATUIT!", g2t: "Formes Pro",
+g2d: "Géométrie", g3t: "Nombres Pro", g3d: "Compter", g4t: "Animaux", g4d: "Sons et noms",
+find: "Cherche la couleur", adults: "PARENTS UNIQUEMENT", payT: "Accès Total", payD:
+"Débloquez tout.", trial: "7 JOURS GRATUITS", colors: {RED: "ROUGE", BLUE: "BLEU", GREEN:
+"VERT", YELLOW: "JAUNE"} },
+it: { hi: "Ciao!", sub: "Pronto a giocare?", g1t: "Colori Magici", g1d: "GRATIS!", g2t: "Forme
+Pro", g2d: "Geometria", g3t: "Numeri Pro", g3d: "Conta con noi", g4t: "Animali", g4d: "Suoni e
+nomi", find: "Trova il colore", adults: "SOLO GENITORI", payT: "Accesso Totale", payD: "Sblocca
+tutto.", trial: "7 GIORNI GRATIS", colors: {RED: "ROSSO", BLUE: "BLU", GREEN: "VERDE",
+YELLOW: "GIALLO"} },
+
+nl: { hi: "Hoi!", sub: "Gaan we spelen?", g1t: "Kleuren", g1d: "GRATIS!", g2t: "Vormen Pro",
+g2d: "Meetkunde", g3t: "Getallen Pro", g3d: "Leren tellen", g4t: "Dieren", g4d: "Geluiden &
+namen", find: "Zoek de kleur", adults: "ALLEEN OUDERS", payT: "Volledige Toegang", payD:
+"Ontgrendel alles.", trial: "7 DAGEN GRATIS", colors: {RED: "ROOD", BLUE: "BLAUW", GREEN:
 "GROEN", YELLOW: "GEEL"} }
 };
-let lang = 'es';
+let currentLang = 'es';
 let stars = 0;
-
-let mathSol = 0;
-let mathTyped = "";
-function changeLang(l, btn) {
-lang = l;
-document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+let targetAns = 0;
+let currentInput = "";
+function setAppLang(l, btn) {
+currentLang = l;
+document.querySelectorAll('.btn-lang').forEach(b => b.classList.remove('active'));
 btn.classList.add('active');
-updateUI();
+refreshUI();
 }
-function updateUI() {
-const t = texts[lang];
-document.getElementById('ui-hi').innerText = t.hi;
-document.getElementById('ui-sub').innerText = t.sub;
-document.getElementById('ui-g1').innerText = t.g1;
-document.getElementById('ui-g2').innerText = t.g2;
-document.getElementById('ui-g3').innerText = t.g3;
-document.getElementById('ui-g4').innerText = t.g4;
-document.getElementById('ui-free').innerText = t.free;
-document.getElementById('ui-d1').innerText = t.d1;
-document.getElementById('ui-d2').innerText = t.d2;
-document.getElementById('ui-d3').innerText = t.d3;
-document.getElementById('ui-find').innerText = t.find;
-document.getElementById('ui-adults').innerText = t.adults;
-document.getElementById('ui-pay-title').innerText = t.payT;
-document.getElementById('ui-pay-desc').innerText = t.payD;
+function refreshUI() {
+const t = dict[currentLang];
+document.getElementById('txt-hi').innerText = t.hi;
+document.getElementById('txt-sub').innerText = t.sub;
+document.getElementById('g1-t').innerText = t.g1t;
+document.getElementById('g1-d').innerText = t.g1d;
+document.getElementById('g2-t').innerText = t.g2t;
+document.getElementById('g2-d').innerText = t.g2d;
+document.getElementById('g3-t').innerText = t.g3t;
+document.getElementById('g3-d').innerText = t.g3d;
+document.getElementById('g4-t').innerText = t.g4t;
+document.getElementById('g4-d').innerText = t.g4d;
+document.getElementById('txt-find').innerText = t.find;
+document.getElementById('txt-adults').innerText = t.adults;
+document.getElementById('txt-pay-t').innerText = t.payT;
+document.getElementById('txt-pay-d').innerText = t.payD;
+document.getElementById('txt-trial').innerText = t.trial;
 }
-function startColors() {
-document.getElementById('game-colors').style.display = 'flex';
-nextColorRound();
-}
-function nextColorRound() {
-const colors = [{n: "RED", c: "#FF5E57"}, {n: "BLUE", c: "#18DCFF"}, {n: "GREEN", c:
-"#1DD1A1"}, {n: "YELLOW", c: "#FECA57"}];
-const target = colors[Math.floor(Math.random() * 4)];
-document.getElementById('target-color-name').innerText = texts[lang].colors[target.n];
-document.getElementById('target-color-name').style.color = target.c;
-const grid = document.getElementById('color-options');
-grid.innerHTML = '';
+function launchGame(id) {
+if(id === 'colors') {
+document.getElementById('view-colors').style.display = 'flex';
 
-colors.sort(() => Math.random() - 0.5).forEach(col => {
+nextRoundColors();
+}
+}
+function exitGame() { document.querySelectorAll('.screen-overlay').forEach(s =>
+s.style.display = 'none'); }
+function nextRoundColors() {
+const palette = [
+{id: "RED", c: "#FF5E57"}, {id: "BLUE", c: "#18DCFF"},
+{id: "GREEN", c: "#1DD1A1"}, {id: "YELLOW", c: "#FECA57"}
+];
+const target = palette[Math.floor(Math.random() * 4)];
+document.getElementById('color-target').innerText = dict[currentLang].colors[target.id];
+document.getElementById('color-target').style.color = target.c;
+const grid = document.getElementById('grid-colors');
+grid.innerHTML = '';
+palette.sort(() => Math.random() - 0.5).forEach(p => {
 const div = document.createElement('div');
-div.className = 'color-option';
-div.style.backgroundColor = col.c;
-div.innerText = texts[lang].colors[col.n];
-div.onclick = () => { if(col.n === target.n) { stars += 10;
-document.getElementById('star-count').innerText = stars; nextColorRound(); } };
+div.className = 'tile';
+div.style.backgroundColor = p.c;
+div.innerText = dict[currentLang].colors[p.id];
+div.onclick = () => {
+if(p.id === target.id) {
+celebrate();
+nextRoundColors();
+}
+};
 grid.appendChild(div);
 });
 }
-function openGate() {
-const a = Math.floor(Math.random() * 5) + 5;
-const b = Math.floor(Math.random() * 4) + 1;
-mathSol = a + b;
-mathTyped = "";
-document.getElementById('math-question').innerText = `${a} + ${b} = ?`;
-document.getElementById('math-display').innerText = "?";
-document.getElementById('gate-modal').style.display = 'flex';
+function celebrate() {
+stars += 10;
+const b = document.getElementById('badge');
+document.getElementById('val-stars').innerText = stars;
+b.classList.add('score-bump');
+setTimeout(() => b.classList.remove('score-bump'), 200);
 }
-function typeNum(n) {
-mathTyped += n;
-document.getElementById('math-display').innerText = mathTyped;
-if(parseInt(mathTyped) === mathSol) {
-setTimeout(() => { document.getElementById('gate-modal').style.display = 'none';
-document.getElementById('pay-modal').style.display = 'flex'; }, 300);
-} else if(mathTyped.length >= 2) clearMath();
+
+function parentalGate() {
+const n1 = Math.floor(Math.random() * 6) + 4;
+const n2 = Math.floor(Math.random() * 4) + 1;
+targetAns = n1 + n2;
+currentInput = "";
+document.getElementById('math-q').innerText = `${n1} + ${n2} = ?`;
+document.getElementById('math-input').innerText = "?";
+document.getElementById('modal-gate').style.display = 'flex';
 }
-function clearMath() { mathTyped = ""; document.getElementById('math-display').innerText
+function inputNum(n) {
+currentInput += n;
+document.getElementById('math-input').innerText = currentInput;
+if(parseInt(currentInput) === targetAns) {
+setTimeout(() => {
+document.getElementById('modal-gate').style.display = 'none';
+document.getElementById('modal-pay').style.display = 'flex';
+}, 400);
+} else if(currentInput.length >= 2) {
+clearMath();
+}
+}
+function clearMath() { currentInput = ""; document.getElementById('math-input').innerText
 = "?"; }
-function closeOverlays() { document.querySelectorAll('.overlay, .modal-parental').forEach(o=> o.style.display = 'none'); }
+function hideModals() { document.querySelectorAll('.modal-bg').forEach(m =>
+m.style.display = 'none'); }
 </script>
 </body>
 </html>
