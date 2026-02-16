@@ -3,164 +3,178 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,
-user-scalable=no">
-<title>Montessori World</title>
-<script src="https://cdn.tailwindcss.com"></script>
+user-scalable=no, viewport-fit=cover">
+<title>Montessori World Pro</title>
+<!-- Configuración para App Móvil -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
-@import url('https://fonts.googleapis.com/css2?
-family=Quicksand:wght@400;700&display=swap');
-body {
-font-family: 'Quicksand', sans-serif;
-background-color: #FDFCF0;
-margin: 0;
-overflow: hidden;
-touch-action: none;
+:root {
+--bg: #FDFCF0;
+--text: #4A4A4A;
+--gold: #FFD700;
 }
-.wood-border { border: 8px solid #D2B48C; border-radius: 2rem; background: white; }
-.btn-premium { background: linear-gradient(135deg, #FFD700, #FFA500); }
+body {
+margin: 0;
+font-family: -apple-system, sans-serif;
+background-color: var(--bg);
+color: var(--text);
+display: flex;
+flex-direction: column;
+height: 100vh;
+overflow: hidden;
+-webkit-user-select: none;
+}
+header {
+padding: 50px 20px 20px;
+display: flex;
+justify-content: space-between;
+}
+.container {
+flex: 1;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+padding: 20px;
+}
+.card {
+
+background: white;
+width: 100%;
+max-width: 320px;
+padding: 25px;
+border-radius: 25px;
+margin-bottom: 20px;
+display: flex;
+align-items: center;
+box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+border-bottom: 6px solid #e0e0e0;
+cursor: pointer;
+position: relative;
+}
+.card:active { transform: translateY(4px); border-bottom-width: 2px; }
+.icon { font-size: 2.5rem; margin-right: 20px; }
+.label { font-weight: bold; font-size: 1.1rem; }
+.badge {
+background: var(--gold);
+color: #8B4513;
+font-size: 0.7rem;
+font-weight: 900;
+padding: 4px 10px;
+border-radius: 12px;
+position: absolute;
+top: -10px;
+right: 10px;
+}
+#gate {
+position: fixed;
+inset: 0;
+background: rgba(0,0,0,0.8);
+display: none;
+align-items: center;
+justify-content: center;
+z-index: 1000;
+}
+.modal {
+background: white;
+padding: 30px;
+border-radius: 30px;
+width: 85%;
+
+max-width: 340px;
+text-align: center;
+}
+.numpad {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 10px;
+margin-top: 20px;
+}
+.numpad button {
+padding: 15px;
+font-size: 1.2rem;
+border: none;
+background: #f0f0f0;
+border-radius: 15px;
+font-weight: bold;
+}
 </style>
 </head>
-<body class="flex flex-col h-screen w-screen overflow-hidden">
-<!-- Header -->
-<div class="p-6 pt-10 flex justify-between items-center bg-white/50 backdrop-blur-sm">
-<div id="lang-btn" class="text-2xl cursor-pointer">
+<body>
+<header>
+<div style="font-size: 1.5rem">
 
 🇪🇸
 
 </div>
 
-<div class="bg-white px-4 py-1 rounded-full shadow-sm font-bold text-gray-500 border
-border-gray-100">
+<div style="font-weight: bold">
+
 ⭐
 
-<span id="star-count">0</span>
+0</div>
 
-</div>
-</div>
-<!-- Main Content -->
-
-<div id="main-container" class="flex-1 flex flex-col items-center justify-center p-6 space-
-y-8">
-
-<div class="text-center">
-<h1 id="title" class="text-3xl font-black text-gray-800 tracking-tight">¡Hola!</h1>
-<p id="subtitle" class="text-gray-400 font-medium">Elige una actividad</p>
-</div>
-
-<div class="flex flex-col gap-4 w-full max-w-xs">
-<!-- Game 1 -->
-<div onclick="openGame('counting')" class="bg-white p-6 rounded-[2rem] shadow-sm
-border-b-4 border-orange-100 flex items-center gap-4 cursor-pointer active:scale-95
-transition-transform">
-<span class="text-4xl">
+</header>
+<div class="container">
+<h1 style="font-size: 2rem; margin: 0;">¡Hola!</h1>
+<p style="color: #888; margin-bottom: 40px;">Toca una bandeja para empezar</p>
+<div class="card" onclick="alert('Cargando juego...')">
+<span class="icon">
 
 🧮
 
 </span>
 
-<span class="font-bold text-gray-600">Contar Perlas</span>
+<span class="label">Contar Perlas</span>
 </div>
-<!-- Game 2 (Premium) -->
-<div onclick="handlePremium()" class="bg-white p-6 rounded-[2rem] shadow-sm
-
-border-b-4 border-blue-100 flex items-center gap-4 cursor-pointer active:scale-95 transition-
-transform relative">
-
-<span class="text-4xl">
+<div class="card" onclick="openGate()">
+<span class="badge">PREMIUM</span>
+<span class="icon">
 
 🔺
 
 </span>
 
-<span class="font-bold text-gray-600">Formas (Pro)</span>
-<span class="absolute -top-2 -right-2 bg-amber-400 text-white text-[10px] font-black
-px-2 py-1 rounded-full shadow-md">PRO</span>
+<span class="label">Formas Pro</span>
 </div>
 </div>
-</div>
-<!-- Modal Parental Gate (Simplificado) -->
-<div id="parent-gate" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-
-[100] p-6">
-<div class="bg-white w-full max-w-xs rounded-[2rem] p-8 text-center shadow-2xl">
-<p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Solo
-Adultos</p>
-<p class="text-lg font-bold mb-4">¿Cuánto es 7 + 8?</p>
-<input type="number" id="math-input" class="w-20 text-center text-3xl font-black
-border-b-4 border-blue-400 mb-6 outline-none" placeholder="?">
-<div class="flex gap-2">
-<button onclick="closeGate()" class="flex-1 py-3 font-bold text-gray-400">Cancelar</
+
+<div id="gate">
+<div class="modal">
+<p style="font-size: 0.7rem; font-weight: bold; color: #aaa; letter-spacing: 2px;">MODO
+PADRES</p>
+<p style="font-weight: bold; margin: 15px 0;">Resuelve: 8 + 5</p>
+<div id="display" style="font-size: 2.5rem; font-weight: 800; color: #007AFF; min-height:
+3rem;">?</div>
+<div class="numpad">
+<button onclick="add('1')">1</button><button onclick="add('2')">2</button><button
+onclick="add('3')">3</button>
+<button onclick="add('4')">4</button><button onclick="add('5')">5</button><button
+onclick="add('6')">6</button>
+<button onclick="add('7')">7</button><button onclick="add('8')">8</button><button
+onclick="add('9')">9</button>
+<button onclick="clr()" style="color: red">C</button><button onclick="add('0')">0</
 button>
-<button onclick="checkMath()" class="flex-1 py-3 bg-blue-500 text-white font-bold
-rounded-xl">Entrar</button>
+<button onclick="closeGate()">X</button>
 </div>
 </div>
-</div>
-<!-- Paywall -->
-<div id="paywall" class="fixed inset-0 bg-white hidden flex-col items-center justify-center
-
-p-8 z-[200]">
-<div class="w-20 h-20 btn-premium rounded-3xl flex items-center justify-center text-4xl
-mb-6 shadow-lg shadow-amber-200">
-
-💎
-
-</div>
-
-<h2 class="text-2xl font-black mb-2 uppercase italic text-center">Desbloquear Todo</h2>
-<p class="text-gray-400 text-center mb-10">Acceso ilimitado a todas las bandejas
-Montessori.</p>
-
-<button onclick="subscribe()" class="w-full max-w-xs py-5 btn-premium text-white font-
-black rounded-3xl shadow-xl active:scale-95 transition-transform uppercase tracking-widest
-
-mb-4">
-7 DÍAS GRATIS
-</button>
-
-<button onclick="closePaywall()" class="text-gray-300 font-bold uppercase tracking-
-tighter text-sm">Ahora no</button>
-
 </div>
 <script>
-let stars = 0;
-function openGame(type) {
-// Animación de carga simple
-document.getElementById('main-container').innerHTML = `
-<div class="flex flex-col items-center p-10 text-center">
-<span class="text-6xl mb-4 animate-bounce">
-
-🎨
-
-</span>
-<h2 class="text-xl font-bold">Cargando material...</h2>
-<button onclick="location.reload()" class="mt-10 text-gray-400 font-bold">←
-VOLVER</button>
-</div>
-`;
-}
-function handlePremium() {
-document.getElementById('parent-gate').classList.replace('hidden', 'flex');
-}
-function closeGate() {
-document.getElementById('parent-gate').classList.replace('flex', 'hidden');
-}
-function checkMath() {
-const val = document.getElementById('math-input').value;
-if (parseInt(val) === 15) {
-
+let input = "";
+const target = 13;
+function openGate() { document.getElementById('gate').style.display = 'flex'; clr(); }
+function closeGate() { document.getElementById('gate').style.display = 'none'; }
+function clr() { input = ""; document.getElementById('display').innerText = "?"; }
+function add(n) {
+input += n;
+document.getElementById('display').innerText = input;
+if (parseInt(input) === target) {
+alert("Suscripción activada con éxito.");
 closeGate();
-document.getElementById('paywall').classList.replace('hidden', 'flex');
-} else {
-alert("Incorrecto. Intenta de nuevo.");
-document.getElementById('math-input').value = "";
+} else if (input.length >= 2) {
+setTimeout(clr, 300);
 }
-}
-function closePaywall() {
-document.getElementById('paywall').classList.replace('flex', 'hidden');
-}
-function subscribe() {
-alert("¡Suscripción Activada! (Simulación)");
-location.reload();
 }
 </script>
 </body>
