@@ -1,0 +1,2 @@
+{ "name": "Montessori World Pro", "short_name": "Montessori", "description": "Aplicación educativa premium basada en el método Montessori.", "start_url": "index.html", "display": "standalone", "background_color": "#FDFCF0", "theme_color": "#D2B48C", "orientation": "portrait", "icons": [ { "src": "https://www.google.com/search?q=https://cdn-icons-png.flaticon.com/512/2641/2641626.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" } ] }
+
