@@ -3,269 +3,165 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,
-user-scalable=no, viewport-fit=cover">
-<title>Asteroid Hunter Pro</title>
-<!-- Configuración PWA Crítica para iPhone -->
-<link rel="manifest" href="manifest.json">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="AsteroidPro">
-<link rel="apple-touch-icon" href="https://img.icons8.com/fluency/512/space-ship.png">
-<!-- Splash Screen -->
-<link rel="apple-touch-startup-image" href="https://images.unsplash.com/
-photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1000&q=80">
+user-scalable=no">
+<title>Montessori World</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?
-family=Goldman:wght@400;700&display=swap');
+family=Quicksand:wght@400;700&display=swap');
 body {
+font-family: 'Quicksand', sans-serif;
+background-color: #FDFCF0;
 margin: 0;
-background: #000;
 overflow: hidden;
-font-family: 'Goldman', sans-serif;
-color: white;
-user-select: none;
--webkit-tap-highlight-color: transparent;
-touch-action: manipulation;
+touch-action: none;
 }
-.bg-space { background: radial-gradient(circle at 50% 50%, #0f172a 0%, #000 100%); }
-.neon-glow { text-shadow: 0 0 10px rgba(6, 182, 212, 0.8), 0 0 20px rgba(6, 182, 212, 0.4); }
-
-.btn-main { background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%); box-
-shadow: 0 0 20px rgba(8, 145, 178, 0.4); }
-
-.btn-reward { background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
-
-animation: pulse-gold 2s infinite; }
-@keyframes pulse-gold { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
-.logo-float { animation: float 3s ease-in-out infinite; }
-@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform:
-translateY(-10px); } }
+.wood-border { border: 8px solid #D2B48C; border-radius: 2rem; background: white; }
+.btn-premium { background: linear-gradient(135deg, #FFD700, #FFA500); }
 </style>
 </head>
-<body class="bg-space">
-<div id="root"></div>
-<script type="text/babel">
-const { useState, useEffect, useRef, useCallback } = React;
-// Configuración AdMob verificada según tus fotos
-const ADMOB_CONFIG = {
-rewardedId: "ca-app-pub-2651650840676073/5085506689",
-bannerId: "ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX"
-};
-const App = () => {
-const [view, setView] = useState('MENU');
-const [score, setScore] = useState(0);
-const [gems, setGems] = useState(parseInt(localStorage.getItem('ah_gems')) || 0);
-const [highScore, setHighScore] = useState(parseInt(localStorage.getItem('ah_hs')) || 0);
-const [pendingGems, setPendingGems] = useState(0);
-const [upgrades, setUpgrades] =
-useState(JSON.parse(localStorage.getItem('ah_upgrades')) || { power: 1, luck: 1 });
-const [isMuted, setIsMuted] = useState(localStorage.getItem('ah_muted') === 'true');
-const audioCtx = useRef(null);
-const musicInterval = useRef(null);
-useEffect(() => {
-localStorage.setItem('ah_gems', gems);
-localStorage.setItem('ah_upgrades', JSON.stringify(upgrades));
-localStorage.setItem('ah_muted', isMuted);
-if (score > highScore) {
-setHighScore(score);
-localStorage.setItem('ah_hs', score);
-}
-}, [gems, upgrades, score]);
+<body class="flex flex-col h-screen w-screen overflow-hidden">
+<!-- Header -->
+<div class="p-6 pt-10 flex justify-between items-center bg-white/50 backdrop-blur-sm">
+<div id="lang-btn" class="text-2xl cursor-pointer">
 
-const initAudio = () => {
-if (!audioCtx.current) audioCtx.current = new (window.AudioContext ||
-window.webkitAudioContext)();
-if (audioCtx.current.state === 'suspended') audioCtx.current.resume();
-};
-const playNote = useCallback((freq, duration, type = 'square', vol = 0.05) => {
-if (isMuted || !audioCtx.current) return;
-try {
-const osc = audioCtx.current.createOscillator();
-const gain = audioCtx.current.createGain();
-osc.type = type;
-osc.frequency.setValueAtTime(freq, audioCtx.current.currentTime);
-gain.gain.setValueAtTime(vol, audioCtx.current.currentTime);
-gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.current.currentTime +
-duration);
-osc.connect(gain); gain.connect(audioCtx.current.destination);
-osc.start(); osc.stop(audioCtx.current.currentTime + duration);
-} catch(e) {}
-}, [isMuted]);
-const handleFire = () => {
-initAudio();
-setScore(s => s + (10 * upgrades.power));
-playNote(150 + (score % 300), 0.1, 'square');
-};
-return (
-<div className="w-full h-screen relative flex flex-col items-center justify-center
-overflow-hidden p-6 pt-12">
-<button onClick={() => setIsMuted(!isMuted)} className="absolute top-12 right-6
-z-50 text-2xl opacity-40">{isMuted ? '
-
-🔇
-
-' : '
-
-🔊
-
-'}</button>
-
-<div className="absolute top-12 left-6 z-50 flex items-center gap-2 bg-black/40
-px-4 py-2 rounded-full border border-white/10 shadow-lg">
-<span className="text-yellow-400">
-
-💎
-
-</span><span className="font-bold
-
-text-sm">{gems.toLocaleString()}</span>
-</div>
-{view === 'MENU' && (
-<div className="flex flex-col items-center gap-10 animate-in fade-in zoom-in
-
-duration-500">
-<div className="flex flex-col items-center logo-float">
-<svg width="120" height="120" viewBox="0 0 100 100">
-<path d="M50 5L15 85L50 70L85 85L50 5Z" fill="url(#grad1)"
-stroke="#22d3ee" strokeWidth="2"/>
-<defs>
-<linearGradient id="grad1" x1="50%" y1="0%" x2="50%" y2="100%">
-<stop offset="0%" style={{stopColor:'#22d3ee', stopOpacity:1}} />
-<stop offset="100%" style={{stopColor:'#0891b2', stopOpacity:1}} />
-</linearGradient>
-</defs>
-</svg>
-<h1 className="text-4xl font-black italic text-center neon-glow mt-4
-leading-tight">ASTEROID<br/><span className="text-cyan-500">HUNTER PRO</span></h1>
-</div>
-<div className="flex flex-col gap-4 w-64">
-
-<button onClick={() => { initAudio(); setView('GAME'); }} className="btn-
-main py-5 rounded-2xl font-black text-xl uppercase tracking-widest active:scale-95 shadow-xl
-
-transition-all">Desplegar</button>
-<button onClick={() => setView('HANGAR')} className="bg-slate-800/50
-
-border border-white/10 py-4 rounded-2xl font-bold uppercase text-xs tracking-
-widest">Hangar</button>
-
-</div>
-</div>
-)}
-{view === 'GAME' && (
-<div className="w-full h-full flex flex-col items-center justify-around py-20">
-<div className="text-center">
-<p className="text-cyan-500 text-[10px] font-bold uppercase tracking-
-[0.3em] mb-2 opacity-70">Puntos Extraídos</p>
-
-<h2 className="text-7xl font-black italic neon-
-glow">{score.toLocaleString()}</h2>
+🇪🇸
 
 </div>
 
-<button onPointerDown={handleFire} className="w-60 h-60 rounded-full btn-
-main flex items-center justify-center text-4xl font-black shadow-[0_0_60px_rgba(6,182,212,0.5)]
+<div class="bg-white px-4 py-1 rounded-full shadow-sm font-bold text-gray-500 border
+border-gray-100">
+⭐
 
-active:scale-90 transition-all border-4 border-white/10">FUEGO</button>
-<button onClick={() => { setPendingGems(Math.floor(score/15) +
-(upgrades.luck * 2)); setView('REWARD'); }} className="bg-red-500/20 text-red-400 px-8
-
-py-3 rounded-full text-[10px] font-bold uppercase tracking-widest border border-
-red-500/30">Finalizar Misión</button>
+<span id="star-count">0</span>
 
 </div>
-)}
-{view === 'REWARD' && (
-<div className="w-full max-w-xs bg-slate-900/95 border border-cyan-500/30
-rounded-[3rem] p-8 text-center animate-in slide-in-from-bottom shadow-2xl">
-<span className="text-5xl block mb-4">
+</div>
+<!-- Main Content -->
 
-💎
+<div id="main-container" class="flex-1 flex flex-col items-center justify-center p-6 space-
+y-8">
+
+<div class="text-center">
+<h1 id="title" class="text-3xl font-black text-gray-800 tracking-tight">¡Hola!</h1>
+<p id="subtitle" class="text-gray-400 font-medium">Elige una actividad</p>
+</div>
+
+<div class="flex flex-col gap-4 w-full max-w-xs">
+<!-- Game 1 -->
+<div onclick="openGame('counting')" class="bg-white p-6 rounded-[2rem] shadow-sm
+border-b-4 border-orange-100 flex items-center gap-4 cursor-pointer active:scale-95
+transition-transform">
+<span class="text-4xl">
+
+🧮
 
 </span>
 
-<h2 className="text-xl font-black mb-1 italic uppercase">Misión Cumplida</
-h2>
-<p className="text-slate-400 mb-8 text-xs">Recursos: <span
-className="text-white font-bold">{pendingGems}</span> gemas.</p>
-<div className="space-y-3">
-<button onClick={() => { setGems(g => g + (pendingGems * 2)); setScore(0);
+<span class="font-bold text-gray-600">Contar Perlas</span>
+</div>
+<!-- Game 2 (Premium) -->
+<div onclick="handlePremium()" class="bg-white p-6 rounded-[2rem] shadow-sm
 
-setView('MENU'); }} className="w-full btn-reward py-5 rounded-2xl font-black text-black text-
-sm">
+border-b-4 border-blue-100 flex items-center gap-4 cursor-pointer active:scale-95 transition-
+transform relative">
 
-📺
+<span class="text-4xl">
 
-VIDEO: ¡DUPLICAR! (X2)</button>
-<button onClick={() => { setGems(g => g + pendingGems); setScore(0);
+🔺
 
-setView('MENU'); }} className="w-full py-4 text-slate-500 text-[10px] uppercase font-
-bold">Cobrar normal</button>
+</span>
 
+<span class="font-bold text-gray-600">Formas (Pro)</span>
+<span class="absolute -top-2 -right-2 bg-amber-400 text-white text-[10px] font-black
+px-2 py-1 rounded-full shadow-md">PRO</span>
 </div>
 </div>
-)}
-{view === 'HANGAR' && (
-<div className="w-full h-full flex flex-col pt-10">
-<button onClick={() => setView('MENU')} className="text-cyan-500 font-bold
-text-xs mb-8">← VOLVER AL PUERTO</button>
-<h2 className="text-3xl font-black mb-8 text-cyan-500 italic">HANGAR</h2>
-<div className="space-y-4">
-{[{ id: 'power', name: 'Potencia de Fuego', icon: '
-
-⚡
-
-' }, { id: 'luck', name:
-
-'Escáner de Suerte', icon: '
-
-🍀
-
-' }].map(item => (
-
-<div key={item.id} className="p-5 bg-slate-800/40 rounded-3xl border
-border-white/5">
-<div className="flex justify-between items-center mb-4">
-
-<span className="font-bold text-[10px] tracking-widest text-
-slate-300">{item.icon} {item.name}</span>
-
-<span className="text-cyan-400 text-xs font-bold">NIV
-{upgrades[item.id]}</span>
 </div>
-<button
-onClick={() => {
-const cost = upgrades[item.id] * 400;
+<!-- Modal Parental Gate (Simplificado) -->
+<div id="parent-gate" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-
+[100] p-6">
+<div class="bg-white w-full max-w-xs rounded-[2rem] p-8 text-center shadow-2xl">
+<p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Solo
+Adultos</p>
+<p class="text-lg font-bold mb-4">¿Cuánto es 7 + 8?</p>
+<input type="number" id="math-input" class="w-20 text-center text-3xl font-black
+border-b-4 border-blue-400 mb-6 outline-none" placeholder="?">
+<div class="flex gap-2">
+<button onclick="closeGate()" class="flex-1 py-3 font-bold text-gray-400">Cancelar</
+button>
+<button onclick="checkMath()" class="flex-1 py-3 bg-blue-500 text-white font-bold
+rounded-xl">Entrar</button>
+</div>
+</div>
+</div>
+<!-- Paywall -->
+<div id="paywall" class="fixed inset-0 bg-white hidden flex-col items-center justify-center
 
-if(gems >= cost){
-setGems(g => g - cost);
-setUpgrades(p => ({...p, [item.id]: p[item.id] + 1}));
-}
-}}
-className={`w-full py-4 rounded-xl font-black text-xs ${gems >=
-(upgrades[item.id]*400) ? 'bg-yellow-500 text-black' : 'bg-slate-700 text-slate-500'}`}
->
-MEJORAR (
+p-8 z-[200]">
+<div class="w-20 h-20 btn-premium rounded-3xl flex items-center justify-center text-4xl
+mb-6 shadow-lg shadow-amber-200">
 
 💎
 
-{upgrades[item.id]*400})
+</div>
 
+<h2 class="text-2xl font-black mb-2 uppercase italic text-center">Desbloquear Todo</h2>
+<p class="text-gray-400 text-center mb-10">Acceso ilimitado a todas las bandejas
+Montessori.</p>
+
+<button onclick="subscribe()" class="w-full max-w-xs py-5 btn-premium text-white font-
+black rounded-3xl shadow-xl active:scale-95 transition-transform uppercase tracking-widest
+
+mb-4">
+7 DÍAS GRATIS
 </button>
+
+<button onclick="closePaywall()" class="text-gray-300 font-bold uppercase tracking-
+tighter text-sm">Ahora no</button>
+
 </div>
-))}
+<script>
+let stars = 0;
+function openGame(type) {
+// Animación de carga simple
+document.getElementById('main-container').innerHTML = `
+<div class="flex flex-col items-center p-10 text-center">
+<span class="text-6xl mb-4 animate-bounce">
+
+🎨
+
+</span>
+<h2 class="text-xl font-bold">Cargando material...</h2>
+<button onclick="location.reload()" class="mt-10 text-gray-400 font-bold">←
+VOLVER</button>
 </div>
-</div>
-)}
-</div>
-);
-};
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
+`;
+}
+function handlePremium() {
+document.getElementById('parent-gate').classList.replace('hidden', 'flex');
+}
+function closeGate() {
+document.getElementById('parent-gate').classList.replace('flex', 'hidden');
+}
+function checkMath() {
+const val = document.getElementById('math-input').value;
+if (parseInt(val) === 15) {
+
+closeGate();
+document.getElementById('paywall').classList.replace('hidden', 'flex');
+} else {
+alert("Incorrecto. Intenta de nuevo.");
+document.getElementById('math-input').value = "";
+}
+}
+function closePaywall() {
+document.getElementById('paywall').classList.replace('flex', 'hidden');
+}
+function subscribe() {
+alert("¡Suscripción Activada! (Simulación)");
+location.reload();
+}
 </script>
 </body>
 </html>
