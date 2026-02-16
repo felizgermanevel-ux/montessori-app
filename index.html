@@ -4,60 +4,54 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,
 user-scalable=no, viewport-fit=cover">
-<title>Montessori World</title>
-<!-- Configuración PWA e Iconos para iPhone -->
+<title>Montessori Pro</title>
+<!-- Configuración para iPhone -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Montessori">
+<meta name="apple-mobile-web-app-title" content="Montessori Pro">
+<!-- Icono Premium para Pantalla de Inicio -->
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/
+svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23FDFCF0'/><circle
+cx='70' cy='30' r='12' fill='%2374b9ff'/><rect x='20' y='20' width='25' height='25' rx='4'
+fill='%23ff7675'/><path d='M50 55 L75 85 L25 85 Z' fill='%2355efc4'/></svg>">
 <style>
 :root {
 --bg: #FDFCF0;
 --text: #4A4A4A;
---gold: #FFD700;
---wood: #D2B48C;
---primary: #FF6B6B;
+--accent: #FF7675;
+--blue: #007AFF;
+--gold: #f1c40f;
 }
 body {
 margin: 0;
-font-family: 'Quicksand', -apple-system, sans-serif;
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+sans-serif;
 background-color: var(--bg);
 color: var(--text);
+height: 100vh;
 display: flex;
 flex-direction: column;
-height: 100vh;
 overflow: hidden;
 -webkit-user-select: none;
 }
-/* Estilo del Icono de la App */
-.app-logo {
-width: 100px;
-height: 100px;
-background: linear-gradient(135deg, #fceabb 0%, #f8b500 100%);
-border-radius: 24px;
-display: flex;
 
-align-items: center;
-justify-content: center;
-box-shadow: 0 10px 20px rgba(248, 181, 0, 0.3);
-margin-bottom: 20px;
-border: 4px solid white;
-}
+/* Header */
 header {
 padding: 60px 25px 10px;
 display: flex;
 justify-content: space-between;
 align-items: center;
 }
-.stars-pill {
+.star-counter {
 background: white;
-padding: 6px 16px;
-border-radius: 25px;
+padding: 8px 16px;
+border-radius: 20px;
 font-weight: 800;
-box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-border: 1px solid #eee;
-color: #f39c12;
+box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+color: var(--gold);
 }
-.container {
+/* Menu */
+.main-container {
 flex: 1;
 display: flex;
 flex-direction: column;
@@ -65,305 +59,317 @@ align-items: center;
 justify-content: center;
 padding: 20px;
 }
-/* Tarjetas de Actividades */
-.card {
+.logo-display {
+width: 100px;
+height: 100px;
 background: white;
-width: 100%;
-max-width: 340px;
-padding: 20px;
 border-radius: 28px;
-margin-bottom: 18px;
-
-display: flex;
-align-items: center;
-box-shadow: 0 6px 12px rgba(0,0,0,0.04);
-border-bottom: 6px solid #e5e7eb;
-cursor: pointer;
-transition: all 0.2s ease;
-position: relative;
-overflow: hidden;
-}
-.card:active {
-transform: translateY(4px) scale(0.98);
-border-bottom-width: 2px;
-}
-.card-icon-container {
-width: 60px;
-height: 60px;
-background: #fff5f5;
-border-radius: 18px;
 display: flex;
 align-items: center;
 justify-content: center;
-margin-right: 18px;
-font-size: 2rem;
+box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+margin-bottom: 25px;
 }
-.label-group {
+.activity-card {
+background: white;
+
+width: 100%;
+max-width: 340px;
+padding: 20px;
+border-radius: 25px;
+margin-bottom: 15px;
 display: flex;
-flex-direction: column;
+align-items: center;
+box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+border-bottom: 5px solid #f0f0f0;
+cursor: pointer;
+position: relative;
 }
-.label-main { font-weight: 800; font-size: 1.1rem; color: #333; }
-.label-sub { font-size: 0.8rem; color: #999; font-weight: 500; }
+.activity-card:active {
+transform: translateY(3px);
+border-bottom-width: 2px;
+}
+.activity-icon {
+font-size: 2rem;
+margin-right: 15px;
+background: #fdfcf0;
+padding: 10px;
+border-radius: 15px;
+}
 .premium-tag {
-background: linear-gradient(to right, #f1c40f, #f39c12);
+background: linear-gradient(135deg, var(--gold), #f39c12);
 color: white;
-font-size: 0.65rem;
+font-size: 0.6rem;
 font-weight: 900;
 padding: 4px 10px;
-
 border-radius: 10px;
 position: absolute;
-top: 15px;
-right: 15px;
-box-shadow: 0 2px 4px rgba(243, 156, 18, 0.3);
+top: 12px;
+right: 12px;
 }
-/* Juego de Perlas */
+/* Modales */
+.overlay {
+position: fixed;
+
+inset: 0;
+background: rgba(0,0,0,0.8);
+display: none;
+align-items: center;
+justify-content: center;
+z-index: 1000;
+padding: 20px;
+backdrop-filter: blur(5px);
+}
+.modal {
+background: white;
+border-radius: 35px;
+width: 100%;
+max-width: 350px;
+padding: 30px;
+text-align: center;
+animation: slideUp 0.3s ease-out;
+}
+@keyframes slideUp {
+from { transform: translateY(20px); opacity: 0; }
+to { transform: translateY(0); opacity: 1; }
+}
+/* Numpad */
+.numpad {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 12px;
+margin-top: 20px;
+}
+.numpad button {
+border: none;
+background: #f5f7f9;
+padding: 20px;
+border-radius: 18px;
+font-size: 1.4rem;
+font-weight: 700;
+color: #333;
+
+}
+#display-val {
+font-size: 3rem;
+font-weight: 900;
+color: var(--blue);
+margin: 10px 0;
+min-height: 3.5rem;
+}
+/* Paywall */
+.pay-btn {
+background: var(--blue);
+color: white;
+border: none;
+width: 100%;
+padding: 20px;
+border-radius: 20px;
+font-size: 1.1rem;
+font-weight: 800;
+box-shadow: 0 8px 20px rgba(0,122,255,0.3);
+margin-top: 15px;
+}
+.price-box {
+background: #f0f7ff;
+border: 2px dashed var(--blue);
+border-radius: 20px;
+padding: 15px;
+margin: 20px 0;
+}
+/* Juego */
 #game-area {
 display: none;
 flex-direction: column;
 align-items: center;
-padding: 40px 20px;
 height: 100%;
+padding-top: 60px;
 }
+
 .bead {
 width: 45px;
 height: 45px;
 background: radial-gradient(circle at 35% 35%, #ff7675, #d63031);
 border-radius: 50%;
 margin: 8px;
-display: inline-block;
 box-shadow: 0 5px 0 #b32d2d;
-cursor: pointer;
-animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+display: inline-block;
 }
-@keyframes popIn {
-from { transform: scale(0); }
-to { transform: scale(1); }
-}
-.wood-tray {
+.tray {
 width: 280px;
 min-height: 180px;
-background: #fdf5e6;
-border: 10px solid var(--wood);
+background: #fffdf9;
+border: 10px solid #D2B48C;
 border-radius: 30px;
 margin-top: 40px;
-box-shadow: inset 0 4px 10px rgba(0,0,0,0.1);
-
 display: flex;
 flex-wrap: wrap;
+justify-content: center;
 padding: 15px;
-align-content: flex-start;
-justify-content: center;
-}
-.back-nav {
-position: absolute;
-top: 60px;
-left: 20px;
-font-weight: 700;
-color: #ccc;
-text-transform: uppercase;
-font-size: 0.75rem;
-letter-spacing: 1px;
-}
-/* Parental Gate Modal */
-#gate-modal {
-position: fixed;
-inset: 0;
-background: rgba(0,0,0,0.8);
-display: none;
-align-items: center;
-justify-content: center;
-z-index: 2000;
-padding: 20px;
-}
-.modal-body {
-background: white;
-border-radius: 35px;
-width: 100%;
-max-width: 340px;
-padding: 35px;
-text-align: center;
-box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-}
-.numpad-grid {
-
-display: grid;
-grid-template-columns: repeat(3, 1fr);
-gap: 12px;
-margin-top: 25px;
-}
-.numpad-grid button {
-border: none;
-background: #f8f9fa;
-padding: 18px;
-border-radius: 20px;
-font-size: 1.3rem;
-font-weight: 700;
-color: #444;
-active: background: #e9ecef;
-}
-#math-display {
-font-size: 3rem;
-font-weight: 900;
-color: #007AFF;
-margin: 20px 0;
 }
 </style>
 </head>
 <body>
-<!-- Pantalla de Menú -->
-<div id="screen-menu">
+<div id="view-menu">
 <header>
-<div style="font-size: 1.4rem; font-weight: bold;">Montessori</div>
-<div class="stars-pill">
+<div style="font-weight: 900; letter-spacing: -0.5px;">MONTESSORI PRO</div>
+<div class="star-counter">
 
 ⭐
 
-<span id="star-val">0</span></div>
+<span id="stars">0</span></div>
 
 </header>
-<div class="container">
-<!-- Icono Central de la App -->
-<div class="app-logo">
+<div class="main-container">
+<div class="logo-display">
 <svg width="60" height="60" viewBox="0 0 100 100">
 <rect x="20" y="20" width="25" height="25" rx="5" fill="#FF7675" />
-<circle cx="70" cy="32" r="15" fill="#74b9ff" />
-<path d="M50 60 L75 85 L25 85 Z" fill="#55efc4" />
-
+<circle cx="70" cy="32" r="14" fill="#74b9ff" />
+<path d="M50 60 L80 90 L20 90 Z" fill="#55efc4" />
 </svg>
 </div>
-<div style="text-align: center; margin-bottom: 35px;">
-<h1 style="margin: 0; color: #333;">¡Hola!</h1>
-<p style="margin: 5px 0 0 0; font-weight: 500;">Elige una actividad educativa</p>
-</div>
-<!-- Botón Juego 1 -->
-<div class="card" onclick="openGame('beads')">
-<div class="card-icon-container" style="background: #fff0f0;">
+
+<h1 style="margin: 0; font-size: 2rem; font-weight: 900;">¡Hola!</h1>
+<p style="color: #aaa; margin-bottom: 30px;">Aprendizaje sensorial avanzado</p>
+<div class="activity-card" onclick="startBeads()">
+<div class="activity-icon">
 
 🧮
 
 </div>
 
-<div class="label-group">
-<span class="label-main">Contar Perlas</span>
-<span class="label-sub">Matemáticas básicas</span>
+<div>
+<div style="font-weight: 800;">Contar Perlas</div>
+<div style="font-size: 0.8rem; color: #bbb;">Nivel Inicial • Gratis</div>
 </div>
 </div>
-<!-- Botón Juego 2 (Premium) -->
-<div class="card" onclick="launchParentalGate()">
+<div class="activity-card" onclick="openGate()">
 <div class="premium-tag">PREMIUM</div>
-<div class="card-icon-container" style="background: #f0f7ff;">
+<div class="activity-icon">
 
 🔺
 
 </div>
 
-<div class="label-group">
-<span class="label-main">Formas y Colores</span>
-<span class="label-sub">Geometría sensorial</span>
+<div>
+<div style="font-weight: 800;">Geometría Pro</div>
+<div style="font-size: 0.8rem; color: #bbb;">Prueba de 7 días incluida</div>
 </div>
 </div>
 </div>
 </div>
-<!-- Pantalla de Juego de Perlas -->
+<!-- Barrera de Seguridad -->
+<div id="gate-modal" class="overlay">
+<div class="modal">
+<div style="font-size: 0.7rem; font-weight: 900; color: #ddd; letter-spacing: 2px;">SOLO
+PADRES</div>
+<p style="font-weight: 700; margin: 15px 0;">Resuelve para ver opciones de pago:</p>
+<div id="math-q" style="font-size: 1.8rem; font-weight: 900;">9 + 6 = ?</div>
+<div id="display-val">?</div>
+<div class="numpad">
+<button onclick="press('1')">1</button><button onclick="press('2')">2</
+button><button onclick="press('3')">3</button>
+<button onclick="press('4')">4</button><button onclick="press('5')">5</
+button><button onclick="press('6')">6</button>
+<button onclick="press('7')">7</button><button onclick="press('8')">8</
+button><button onclick="press('9')">9</button>
+<button onclick="clr()" style="color:var(--accent)">C</button><button
+onclick="press('0')">0</button>
+<button onclick="closeModals()">✕</button>
+</div>
+
+</div>
+</div>
+<!-- Pantalla de Suscripción -->
+<div id="pay-modal" class="overlay">
+<div class="modal">
+<div style="font-size: 3rem; margin-bottom: 10px;">
+
+💎
+
+</div>
+<h2 style="font-weight: 900; margin: 0;">Suscripción Pro</h2>
+<p style="color: #888; font-size: 0.9rem; margin-top: 10px;">Acceso total a todos los
+juegos, formas y colores.</p>
+<div class="price-box">
+<div style="color: var(--blue); font-weight: 900; font-size: 1.1rem;">7 DÍAS GRATIS</
+div>
+<div style="font-size: 0.85rem; color: #666; margin-top: 4px;">Después 2,99€ / mes</
+div>
+</div>
+<button class="pay-btn" onclick="goToPaypal()">EMPEZAR PRUEBA</button>
+
+<p onclick="closeModals()" style="color: #ccc; font-weight: bold; margin-top: 20px; font-
+size: 0.8rem;">VOLVER ATRÁS</p>
+
+</div>
+</div>
+<!-- Area de Juego Gratis -->
 <div id="game-area">
-<div class="back-nav" onclick="exitToMenu()">← Volver</div>
-<h2 id="task-text" style="margin-top: 60px; font-weight: 800; color: #555;">Pon 3 perlas
-en la caja</h2>
-
-<div id="beads-source" style="margin-top: 20px; display: flex; flex-wrap: wrap; justify-
-content: center;">
-
-<!-- Perlas se generan aquí -->
-</div>
-<div class="wood-tray" id="tray"></div>
-
-</div>
-<!-- Modal de Control Parental -->
-<div id="gate-modal">
-<div class="modal-body">
-<span style="font-size: 0.7rem; font-weight: 900; color: #bbb; letter-spacing:
-2px;">BARRERA DE SEGURIDAD</span>
-<p style="margin: 15px 0 5px; font-weight: 700;">Solo para adultos. Resuelve:</p>
-<h3 style="margin: 0; font-size: 1.4rem;">6 + 9 = ?</h3>
-<div id="math-display">?</div>
-<div class="numpad-grid">
-<button onclick="typeNum('1')">1</button><button onclick="typeNum('2')">2</
-button><button onclick="typeNum('3')">3</button>
-<button onclick="typeNum('4')">4</button><button onclick="typeNum('5')">5</
-button><button onclick="typeNum('6')">6</button>
-<button onclick="typeNum('7')">7</button><button onclick="typeNum('8')">8</
-button><button onclick="typeNum('9')">9</button>
-<button onclick="clearMath()" style="color: #ff7675;">C</button><button
-onclick="typeNum('0')">0</button>
-<button onclick="hideGate()">✕</button>
-</div>
-</div>
+<div onclick="closeModals()" style="font-weight: bold; color: #ccc; align-self: flex-start;
+padding-left: 20px;">← MENÚ</div>
+<h2 style="margin-top: 40px; font-weight: 900;">Pon 3 perlas en la bandeja</h2>
+<div id="source" style="margin-top: 20px;"></div>
+<div class="tray" id="target"></div>
 </div>
 <script>
-let totalStars = 0;
-let beadsInTray = 0;
-const target = 3;
-// Gestión de Vistas
-function openGame(game) {
-document.getElementById('screen-menu').style.display = 'none';
-document.getElementById('game-area').style.display = 'flex';
-setupBeads();
+let stars = 0;
+let count = 0;
+let currentInput = "";
+let secretAnswer = 15;
+const PAYPAL_LINK = "https://www.paypal.com/ncp/payment/K6HDDM64UAWZC";
+function openGate() {
+
+const a = Math.floor(Math.random() * 8) + 2;
+const b = Math.floor(Math.random() * 8) + 2;
+secretAnswer = a + b;
+document.getElementById('math-q').innerText = `${a} + ${b} = ?`;
+document.getElementById('gate-modal').style.display = 'flex';
+clr();
 }
-function exitToMenu() {
-document.getElementById('screen-menu').style.display = 'block';
+function closeModals() {
+document.querySelectorAll('.overlay').forEach(m => m.style.display = 'none');
+document.getElementById('view-menu').style.display = 'block';
 document.getElementById('game-area').style.display = 'none';
 }
+function clr() { currentInput = ""; document.getElementById('display-val').innerText = "?"; }
+function press(n) {
+currentInput += n;
+document.getElementById('display-val').innerText = currentInput;
+if(parseInt(currentInput) === secretAnswer) {
+setTimeout(() => {
+document.getElementById('gate-modal').style.display = 'none';
+document.getElementById('pay-modal').style.display = 'flex';
+}, 200);
+} else if(currentInput.length >= 2) {
+setTimeout(clr, 500);
+}
+}
+function goToPaypal() {
+window.location.href = PAYPAL_LINK;
+}
+function startBeads() {
+document.getElementById('view-menu').style.display = 'none';
+document.getElementById('game-area').style.display = 'flex';
+count = 0;
+document.getElementById('target').innerHTML = '';
+const s = document.getElementById('source');
+s.innerHTML = '';
+for(let i=0; i<5; i++) {
 
-// Lógica de Juego de Perlas
-function setupBeads() {
-beadsInTray = 0;
-document.getElementById('tray').innerHTML = '';
-const source = document.getElementById('beads-source');
-source.innerHTML = '';
-for(let i=0; i<6; i++) {
 const b = document.createElement('div');
 b.className = 'bead';
-b.onclick = function() { moveBead(this); };
-source.appendChild(b);
+b.onclick = function() {
+document.getElementById('target').appendChild(this);
+count++;
+if(count === 3) {
+stars += 10;
+document.getElementById('stars').innerText = stars;
+setTimeout(() => { alert("¡Excelente trabajo!"); closeModals(); }, 300);
 }
+};
+s.appendChild(b);
 }
-function moveBead(el) {
-document.getElementById('tray').appendChild(el);
-beadsInTray++;
-if(beadsInTray === target) {
-totalStars += 10;
-document.getElementById('star-val').innerText = totalStars;
-setTimeout(() => {
-alert("¡Excelente! Has completado el trabajo.");
-exitToMenu();
-}, 400);
-}
-}
-// Lógica Control Parental
-let entry = "";
-const correct = 15;
-function launchParentalGate() {
-document.getElementById('gate-modal').style.display = 'flex';
-clearMath();
-}
-function hideGate() {
-document.getElementById('gate-modal').style.display = 'none';
-}
-
-function typeNum(n) {
-entry += n;
-document.getElementById('math-display').innerText = entry;
-if(parseInt(entry) === correct) {
-alert("¡Bienvenido, Padre! Acceso Premium activado.");
-hideGate();
-} else if(entry.length >= 2) {
-setTimeout(clearMath, 300);
-}
-}
-function clearMath() {
-entry = "";
-document.getElementById('math-display').innerText = "?";
 }
 </script>
 </body>
